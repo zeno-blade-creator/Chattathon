@@ -9,7 +9,9 @@
     "verify": "node scripts/verify-urls.mjs",
     "seed": "node scripts/seed.mjs",
     "match": "node scripts/demo-match.mjs",
-    "health": "node scripts/health.mjs"
+    "health": "node scripts/health.mjs",
+    "adversarial": "node scripts/adversarial.mjs",
+    "test": "node scripts/validate.mjs && node scripts/adversarial.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0"

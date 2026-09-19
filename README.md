@@ -128,3 +128,24 @@ npm run validate   # structural gate on the corpus
 npm run verify     # probe every corpus URL
 npm run seed       # push corpus to Supabase
 ```
+
+## Adversarial tests
+
+```bash
+npm test          # corpus validation + all 21 adversarial cases
+npm run adversarial
+```
+
+Covers Person E's list — blank intake, nonsense product, B2B enterprise founder,
+wrong city — plus the ones only visible from the code: prompt injection in the
+intake text, 5k-character input, regex metacharacters, emoji-only fields, and an
+empty corpus.
+
+**The city gate is the one that matters.** The first version substring-matched,
+so *"Boston, Lincolnshire, UK"* and *"Cambridge, England"* both received full
+Massachusetts plans — the exact hallucinated-local-detail failure the build plan
+names as our biggest credibility risk. It now word-boundary matches and then
+checks for disqualifying geography, while `"Boston, MA"` and `"Cambridge, MA 02139"`
+still pass. `checkCity()` returns a `reason` string suitable for showing the user.
+
+There is exactly one city gate, in `lib/profile.mjs`. `lib/corpus.mjs` re-exports it.
