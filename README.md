@@ -60,3 +60,71 @@ must never reach the browser.
 
 Five entries are hand-verified rather than probe-verified because their WAF 403s
 scripted requests — see `data/verified-manually.json` for which, and why.
+
+---
+
+# Person A, part two — the profile side
+
+Person B sources the corpus. **Person A owns the founder, and the join between
+the two.** Nothing here calls a model or the network; it's all deterministic and free.
+
+```
+intake (6 fields) ──▶ buildProfile()  ──▶ signals[]  ─┐
+                                                       ├──▶ shortlist() ──▶ Person B's one model call
+        Person B's corpus ──▶ adaptCorpus() ──────────┘
+```
+
+## `lib/profile.mjs` — the intake contract
+
+`buildProfile(raw)` validates F1's six fields and returns them plus two derived things:
+
+- **`signals[]`** — tags inferred from the free text (sector, customer type,
+  constraints like `bootstrapped` / `non-technical` / `solo-founder`) combined with
+  exact mappings from the `stage` and `goal` dropdowns. These are the same vocabulary
+  as corpus tags, so matching is a set intersection, not a fuzzy compare.
+- **`city_supported`** — the honesty gate. Accepts Boston, Cambridge, Somerville and
+  22 Boston neighbourhoods. Everything else is `false` and must hit the waitlist path.
+
+## `lib/corpus-adapter.mjs` — for Person B
+
+`adaptCorpus(anything)` maps your field names onto the canonical ten and drops
+entries with no URL, no `why_it_matters`, or a duplicate id. It already understands
+`title`/`name`, `link`/`url`, `when`/`date`, `audience`/`who_it_serves`, and folds
+`accelerator`/`investor`/`journalist` into `person_org`, `grant`/`newsletter`/
+`subreddit` into `channel`. **If your shape doesn't map, tell me and I'll add it —
+don't reshape your data to fit mine.**
+
+## `lib/match.mjs` — the join
+
+`buildGenerationInput(corpus, profile)` returns exactly what your model call needs:
+
+```js
+{ profile, candidates: [...20 scored entries], allowed_ids: [...] }
+```
+
+- **`candidates`** is a *balanced* shortlist (6 events / 8 orgs / 6 channels), not
+  the raw top 20 — ten events and no channels is a worse plan even at higher scores.
+- **`allowed_ids`** is your anti-hallucination assertion. The model may only return
+  ids from this list; reject the response if it invents one.
+- Each candidate carries `_match_score` and `_match_reasons` — a deterministic
+  explanation of why it surfaced, independent of what the model claims.
+
+Measured on the seed corpus: **60 entries (39k chars) → 20 candidates (15.6k chars),
+a 60% smaller prompt** for the same plan.
+
+## `lib/db.mjs` — persistence
+
+`saveProfile`, `savePlan`, `seenItemIds`, `healthCheck`. All of them **degrade
+instead of throwing** — no Supabase, no network, no problem, they return
+`{saved:false}` and the demo continues. `seenItemIds()` is the hook for MVP+
+(don't show the same item twice).
+
+## Commands
+
+```bash
+npm run match      # end-to-end profile -> signals -> shortlist, no network
+npm run health     # is Supabase wired up?
+npm run validate   # structural gate on the corpus
+npm run verify     # probe every corpus URL
+npm run seed       # push corpus to Supabase
+```
