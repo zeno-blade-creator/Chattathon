@@ -12,7 +12,9 @@ fi
 
 echo "From Supabase: Project Settings -> API Keys"
 echo
-read -r  -p "Project URL (https://xxxxx.supabase.co): " URL
+DEFAULT_URL="https://qwveafgvylzqudqbiacj.supabase.co"
+read -r -p "Project URL [$DEFAULT_URL]: " URL
+URL="${URL:-$DEFAULT_URL}"
 read -rs -p "anon / publishable key: "        ANON; echo
 read -rs -p "service_role / secret key: "     SVC;  echo
 
