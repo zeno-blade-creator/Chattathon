@@ -1,9 +1,25 @@
 {
   "name": "chattathon",
   "version": "1.0.0",
+  "description": "Hyperlocal GTM Copilot — Boston corpus, generation layer and Expo front end",
+  "private": true,
   "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "validate": "node scripts/validate.mjs",
+    "verify": "node scripts/verify-urls.mjs",
+    "seed": "node scripts/seed.mjs",
+    "match": "node scripts/demo-match.mjs",
+    "health": "node scripts/health.mjs",
+    "adversarial": "node scripts/adversarial.mjs",
+    "test": "node scripts/validate.mjs && node scripts/adversarial.mjs"
+  },
   "dependencies": {
     "@expo/metro-runtime": "~57.0.16",
+    "@supabase/supabase-js": "^2.45.0",
     "expo": "~57.0.24",
     "expo-clipboard": "~57.0.2",
     "expo-status-bar": "~57.0.1",
@@ -16,12 +32,5 @@
   "devDependencies": {
     "@types/react": "~19.2.2",
     "typescript": "~6.0.3"
-  },
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
-  },
-  "private": true
+  }
 }
