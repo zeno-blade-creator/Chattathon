@@ -35,6 +35,12 @@ export interface CorpusEntry {
  */
 export interface PlanItem extends CorpusEntry {
   id: string;
+  /**
+   * 'live' means Tavily retrieved this from the web at request time rather
+   * than it coming from the hand-verified corpus. Both are real URLs; only the
+   * provenance differs, so badge it if you want to be explicit.
+   */
+  source?: 'live';
   /** 1-10 across the whole plan, not per bucket. */
   rank: number;
   why_you_why_now: string;
@@ -89,19 +95,47 @@ export interface IntakeProfile {
   tried: string;
 }
 
+/**
+ * The chips a founder taps, and the exact value the database accepts.
+ *
+ * founder_profiles.stage and .goal are CHECK-constrained columns. Submitting
+ * the label ("Pilot customers") is rejected by Postgres; only the code
+ * ("pilot-customers") inserts. Keep these two lists 1:1 — the label is what a
+ * human reads, the value is what the row stores.
+ */
 export const STAGE_OPTIONS = [
   'Just an idea',
   'Building it',
   'Launched, few users',
   'Launched, growing',
+  'Raising',
 ] as const;
+
+export const STAGE_VALUES: Record<string, string> = {
+  'Just an idea': 'idea',
+  'Building it': 'building',
+  'Launched, few users': 'launched',
+  'Launched, growing': 'early-revenue',
+  'Raising': 'raising',
+};
 
 export const GOAL_OPTIONS = [
   'Users',
   'Pilot customers',
   'Funding',
   'Press',
+  'Cofounders',
+  'Mentors',
 ] as const;
+
+export const GOAL_VALUES: Record<string, string> = {
+  'Users': 'users',
+  'Pilot customers': 'pilot-customers',
+  'Funding': 'funding',
+  'Press': 'press',
+  'Cofounders': 'cofounders',
+  'Mentors': 'mentors',
+};
 
 /** MVP+ — per-item progress so a second generation can avoid repeats. */
 export type ItemStatus = 'todo' | 'done' | 'skipped';
