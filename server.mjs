@@ -1,91 +1,86 @@
-#!/usr/bin/env node
-// HTTP wrapper around the pipeline, plus a bare-bones intake page.
+// The server tier.
 //
-// Person C: the page is scaffolding so the seam is demonstrably working —
-// replace it freely. The contract you care about is POST /api/plan.
-
+// It exists for one reason: API keys must never reach a phone or a browser.
+// The Expo app POSTs a profile and gets back a finished plan. The Gemini,
+// Tavily and Supabase service keys live in this process's environment and are
+// never serialised into a response.
+//
+//   node --env-file=.env server.mjs
+//
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
-import { generateGtmPlan } from './lib/pipeline.mjs';
-import { healthCheck } from './lib/db.mjs';
+import { loadCorpus }   from './lib/corpus.mjs';
+import { generatePlanSafe } from './lib/generate.mjs';
+import { saveProfile, savePlan } from './lib/db.mjs';
+import { normalizeIntake } from './lib/normalize.mjs';
+import { buildProfile }    from './lib/profile.mjs';
 
-try { process.loadEnvFile('.env'); } catch { /* fine — everything degrades */ }
+const PORT = Number(process.env.PORT || 8787);
 
-const PORT = Number(process.env.PORT ?? 3000);
+// Loaded once at boot: 60 rows from Supabase, or the local JSON if it's down.
+let CORPUS = [];
+const ready = loadCorpus().then(({ entries, source }) => { CORPUS = entries;
+  console.log(`corpus: ${entries.length} entries from ${source}`); }).catch(e => {
+  console.error('corpus load failed:', e.message); });
 
-const json = (res, code, body) => {
-  const s = JSON.stringify(body);
-  res.writeHead(code, {
-    'content-type': 'application/json',
-    'content-length': Buffer.byteLength(s),
-    'access-control-allow-origin': '*',
-  });
-  res.end(s);
+const CORS = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-headers': 'content-type',
+  'access-control-allow-methods': 'POST, GET, OPTIONS',
+};
+
+const send = (res, code, body) => {
+  res.writeHead(code, { 'content-type': 'application/json', ...CORS });
+  res.end(JSON.stringify(body));
 };
 
 const readBody = req => new Promise((resolve, reject) => {
-  let data = '';
-  req.on('data', c => {
-    data += c;
-    if (data.length > 1e6) { reject(new Error('body too large')); req.destroy(); }
-  });
-  req.on('end', () => {
-    try { resolve(data ? JSON.parse(data) : {}); }
-    catch { reject(new Error('body is not valid JSON')); }
-  });
+  let b = ''; req.on('data', c => { b += c; if (b.length > 1e6) req.destroy(); });
+  req.on('end', () => { try { resolve(b ? JSON.parse(b) : {}); } catch { reject(new Error('invalid JSON body')); } });
   req.on('error', reject);
 });
 
-const server = createServer(async (req, res) => {
-  const { pathname } = new URL(req.url, `http://${req.headers.host}`);
+createServer(async (req, res) => {
+  if (req.method === 'OPTIONS') { res.writeHead(204, CORS); return res.end(); }
 
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, {
-      'access-control-allow-origin': '*',
-      'access-control-allow-methods': 'POST, GET, OPTIONS',
-      'access-control-allow-headers': 'content-type',
-    });
-    return res.end();
+  if (req.url === '/health') {
+    return send(res, 200, { ok: true, corpus: CORPUS.length,
+      gemini: !!process.env.GEMINI_API_KEY, tavily: !!process.env.TAVILY_API_KEY,
+      supabase: !!process.env.SUPABASE_URL });
   }
 
-  if (req.method === 'GET' && (pathname === '/' || pathname === '/index.html')) {
-    const html = await readFile(new URL('./public/index.html', import.meta.url));
-    res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-    return res.end(html);
+  if (req.method !== 'POST' || req.url !== '/generate') {
+    return send(res, 404, { error: 'POST /generate' });
   }
 
-  if (req.method === 'GET' && pathname === '/api/health') {
-    const h = await healthCheck();
-    return json(res, h.ok ? 200 : 503, {
-      supabase: h.ok ? 'ok' : h.reason,
-      corpus_rows: h.corpusRows ?? null,
-      generator: process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN
-        ? 'claude' : 'stub (no ANTHROPIC_API_KEY)',
-    });
-  }
+  const t0 = Date.now();
+  try {
+    await ready;
+    const intake = await readBody(req);
 
-  if (req.method === 'POST' && pathname === '/api/plan') {
-    let intake;
-    try { intake = await readBody(req); }
-    catch (err) { return json(res, 400, { status: 'invalid', errors: [err.message] }); }
+    // Bug #1's safety net: the UI's labels are mapped to the enum values the
+    // CHECK constraints accept, so an insert can't 400 on capitalisation.
+    const { ok, problems, profile } = normalizeIntake(intake);
+    if (!ok) return send(res, 400, { error: 'invalid intake', problems });
 
-    try {
-      const result = await generateGtmPlan(intake);
-      const code = result.status === 'ok' ? 200
-                 : result.status === 'invalid' ? 422
-                 : 200;                         // unsupported_city is a real answer
-      return json(res, code, result);
-    } catch (err) {
-      console.error('[server] unexpected:', err);
-      return json(res, 500, { status: 'error', errors: ['Something broke on our side.'] });
+    const { plan, meta, fallbackUsed } = await generatePlanSafe(CORPUS, intake);
+
+    // Persistence must never break a demo: both of these degrade to {saved:false}.
+    // buildProfile derives `signals`, which founder_profiles declares NOT NULL.
+    const saved = await saveProfile(buildProfile(profile)).catch(() => ({ saved: false }));
+    if (saved?.id) await savePlan(saved.id, plan, { model: meta.model }).catch(() => {});
+
+    console.log(`generate ${Date.now() - t0}ms items=${plan.items.length} ` +
+                `live=${meta.liveUsed ?? 0} fallback=${fallbackUsed} profile=${saved?.id ?? 'unsaved'}`);
+    if (fallbackUsed) console.error(`  fallback reason: ${meta.error}`);
+
+    return send(res, 200, { status: 'ready', plan, profileId: saved?.id ?? null,
+                            fallbackUsed, ms: Date.now() - t0 });
+  } catch (err) {
+    if (err.code === 'CITY_UNSUPPORTED') {
+      return send(res, 200, { status: 'unsupported_city', city: err.city,
+        message: 'We cover Boston today. Tell us where you are and we will add your city next.' });
     }
+    console.error('generate failed:', err.message);
+    return send(res, 500, { status: 'failed', error: err.message });
   }
-
-  json(res, 404, { status: 'error', errors: [`No route for ${req.method} ${pathname}`] });
-});
-
-server.listen(PORT, () => {
-  console.log(`Misneach running at http://localhost:${PORT}`);
-  console.log(`  POST /api/plan    generate a plan`);
-  console.log(`  GET  /api/health  corpus + generator status`);
-});
+}).listen(PORT, () => console.log(`generation server on http://localhost:${PORT}`));

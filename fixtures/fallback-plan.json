@@ -1,0 +1,300 @@
+{
+  "city": "Boston",
+  "generatedAt": "2026-09-19T18:36:46.130Z",
+  "headline": "Hyperlocal Boston GTM plan to land your first 50 Northeastern student event pilot users",
+  "items": [
+    {
+      "id": "org-bu-innovate",
+      "type": "person_org",
+      "name": "Innovate@BU / BUild Lab",
+      "url": "https://www.bu.edu/innovate/",
+      "date_or_cadence": "Year-round programming; some events open to the public",
+      "who_it_serves": "BU-affiliated founders plus public attendees at open events",
+      "tags": [
+        "university",
+        "boston",
+        "free",
+        "workshops",
+        "talent",
+        "coaching"
+      ],
+      "why_it_matters": "The BUild Lab runs open coaching hours and community events, and BU students are a realistic source of first marketing and engineering help for a solo founder with no budget.",
+      "cost": "Free",
+      "contact_route": "Contact and events pages on bu.edu/innovate",
+      "rank": 1,
+      "why_you_why_now": "BUild Lab sits right on Commonwealth Avenue next to Fenway and hosts open coaching sessions where student event organizers from adjacent campuses meet weekly. Engaging them gives you immediate cross-campus pilot organizers who face empty-seat and ticket-splitting headaches.",
+      "draft": {
+        "channel": "email",
+        "subject": "Attending open coaching / student marketplace pilot",
+        "body": "Hi Innovate@BU team, I am a Fenway-based founder building a mobile app that helps Northeastern students find and split last-minute event tickets. We are launching our student pilot this month and would love to attend an open coaching session to discuss campus distribution. Could you share the link for your next open mentoring hours? Thanks, [Name]"
+      }
+    },
+    {
+      "id": "evt-boston-new-tech",
+      "type": "event",
+      "name": "Boston New Technology (BNT) Product Showcase",
+      "url": "https://www.meetup.com/bostonnewtechnology/",
+      "date_or_cadence": "Monthly showcase; startups present 5-minute product demos",
+      "who_it_serves": "Startups with a working product wanting an audience of local tech people and early adopters",
+      "tags": [
+        "demo",
+        "monthly",
+        "product-launch",
+        "boston",
+        "free",
+        "speaking-slot"
+      ],
+      "why_it_matters": "One of the few Boston events that gives an unknown founder an actual stage slot rather than a badge. Their own domain is defunct — the Meetup group is the live front door.",
+      "cost": "Free to attend; free to apply to present",
+      "contact_route": "Message the organisers via the Meetup group; presenter applications announced per event",
+      "rank": 2,
+      "why_you_why_now": "A 5-minute live showcase slot gets your student ticket-splitting flow in front of 100+ local early adopters and university tech enthusiasts who attend Boston events weekly.",
+      "opener": "Hey, do you usually buy tickets to events like this in advance, or do you look for last-minute passes?"
+    },
+    {
+      "id": "chn-reddit-boston",
+      "type": "channel",
+      "name": "r/boston",
+      "url": "https://www.reddit.com/r/boston/",
+      "date_or_cadence": "Always on; read the rules before posting — self-promotion is restricted",
+      "who_it_serves": "General Boston residents; very large but promotion-hostile",
+      "tags": [
+        "reddit",
+        "boston",
+        "consumer",
+        "free",
+        "high-risk",
+        "rules"
+      ],
+      "why_it_matters": "The biggest concentration of Boston consumers online, and the fastest way to get your product hated if you post an ad. Participate genuinely for a week, then ask a question rather than pitching.",
+      "cost": "Free",
+      "contact_route": "Post publicly; message the mod team for permission first",
+      "rank": 3,
+      "why_you_why_now": "Snell flyers hit a ceiling; asking r/boston how local undergrads navigate ticket resale for Matthews Arena games or local concerts surfaces your exact pilot demographic without breaking promo rules."
+    },
+    {
+      "id": "evt-harvard-ilab-events",
+      "type": "event",
+      "name": "Harvard Innovation Labs — Public Events",
+      "url": "https://innovationlabs.harvard.edu/events/",
+      "date_or_cadence": "Weekly public programming during the academic year",
+      "who_it_serves": "Founders at any stage; many sessions are open to non-Harvard people",
+      "tags": [
+        "workshop",
+        "weekly",
+        "allston",
+        "free",
+        "mentorship",
+        "students"
+      ],
+      "why_it_matters": "A meaningful share of the calendar is open to the public and free, so you can get office-hours-grade advice without an affiliation. Also the best place in Boston to meet technical co-founders and interns.",
+      "cost": "Free for public sessions",
+      "contact_route": "Public event RSVP on the i-lab events page",
+      "rank": 4,
+      "why_you_why_now": "The i-lab's free public workshops gather campus club heads and student conveners from across the river who actively want higher student attendance at their events.",
+      "opener": "Are you running student club events around Boston this semester, or just checking out the workshop?"
+    },
+    {
+      "id": "org-venture-cafe-cambridge",
+      "type": "person_org",
+      "name": "Venture Café Cambridge (org)",
+      "url": "https://venturecafecambridge.org/contact/",
+      "date_or_cadence": "Year-round; programming team accepts session proposals",
+      "who_it_serves": "Anyone in the Greater Boston innovation community",
+      "tags": [
+        "community",
+        "cambridge",
+        "speaking-slot",
+        "free",
+        "intro-path"
+      ],
+      "why_it_matters": "You can propose to run a session at the Thursday Gathering. Going from attendee to session host is the cheapest credibility jump available to a Boston founder — and it's a form, not a favour.",
+      "cost": "Free",
+      "contact_route": "Public contact form; session proposal form on the site",
+      "rank": 5,
+      "why_you_why_now": "Submitting a micro-session proposal on collegiate event accessibility turns you into a convener for student leaders across Fenway and Cambridge rather than just another attendee.",
+      "draft": {
+        "channel": "email",
+        "subject": "Thursday Gathering Session Proposal: Campus Event Access",
+        "body": "Hi Venture Café team, I am a Fenway-based student founder building a campus event ticket-splitting app. I would love to submit a session proposal for an upcoming Thursday Gathering focused on student community engagement and filling empty event seats across Boston campuses. Where can I submit the proposal form? Best, [Name]"
+      }
+    },
+    {
+      "id": "evt-district-hall",
+      "type": "event",
+      "name": "District Hall Boston — Public Innovation Space Events",
+      "url": "https://districthallboston.org/",
+      "date_or_cadence": "Rolling event calendar; free co-working during open hours",
+      "who_it_serves": "Boston founders and community organisers, Seaport-based",
+      "tags": [
+        "seaport",
+        "coworking",
+        "free",
+        "community",
+        "venue",
+        "events"
+      ],
+      "why_it_matters": "Free public workspace and a calendar of community events — and you can host your own meetup there, which turns you from attendee into convener.",
+      "cost": "Free to use; event costs vary",
+      "contact_route": "Event calendar and space enquiry form on the site",
+      "rank": 6,
+      "why_you_why_now": "District Hall's open public workspace and evening mixers bring together young Boston community hosts and campus ambassadors who can seed your app inside their own student networks.",
+      "opener": "Hey, do you host any community or student meetups around the city?"
+    },
+    {
+      "id": "chn-startup-boston-newsletter",
+      "type": "channel",
+      "name": "Startup Boston — Community Newsletter & Slack",
+      "url": "https://www.startupbos.org/",
+      "date_or_cadence": "Regular community updates; year-round community channels",
+      "who_it_serves": "Boston startup operators and founders",
+      "tags": [
+        "newsletter",
+        "slack",
+        "boston",
+        "free",
+        "community",
+        "operators"
+      ],
+      "why_it_matters": "Operator-run rather than sponsor-run, so the tone is peer-to-peer. A question posted in the community reads as participation, not promotion.",
+      "cost": "Free",
+      "contact_route": "Signup links on startupbos.org",
+      "rank": 7,
+      "why_you_why_now": "The operator-led Slack lets you ask Boston community managers directly how they recruit campus ambassadors and handle leftover event ticket allotments."
+    },
+    {
+      "id": "org-score-boston",
+      "type": "person_org",
+      "name": "SCORE Boston — Free Mentorship",
+      "url": "https://boston.score.org/",
+      "date_or_cadence": "Year-round; mentor matching within days, plus free workshops",
+      "who_it_serves": "Early-stage and small-business founders in Greater Boston",
+      "tags": [
+        "mentorship",
+        "free",
+        "boston",
+        "one-to-one",
+        "workshops",
+        "fast"
+      ],
+      "why_it_matters": "Free mentorship from retired executives, matched in days rather than months. Low prestige, unusually high signal-to-time ratio for a founder with no advisors.",
+      "cost": "Free",
+      "contact_route": "Mentor request form on boston.score.org",
+      "rank": 8,
+      "why_you_why_now": "Free, rapid mentor matching pairs you with an experienced operator within days to sanity-check peer-to-peer ticket payment compliance before you onboard your first 50 pilot transactions.",
+      "draft": {
+        "channel": "email",
+        "subject": "SCORE Mentor Request: Consumer Ticketing Marketplace",
+        "body": "Hi SCORE Boston, I am building a mobile app helping Northeastern students split last-minute event ticket costs. I am looking for a mentor with consumer marketplace or ticketing experience to review our payment flow and campus pilot roadmap. Could you match me with an advisor in this area? Thank you, [Name]"
+      }
+    },
+    {
+      "id": "evt-cic-events",
+      "type": "event",
+      "name": "CIC Boston & Cambridge — Community Events",
+      "url": "https://cic.com/events",
+      "date_or_cadence": "Rolling; multiple events weekly across CIC Boston and CIC Cambridge",
+      "who_it_serves": "Startups of all stages in the CIC buildings and the wider public",
+      "tags": [
+        "coworking",
+        "weekly",
+        "cambridge",
+        "boston",
+        "networking",
+        "venue"
+      ],
+      "why_it_matters": "CIC is the physical building most Boston startups pass through, so its calendar is a proxy for the whole ecosystem's calendar. Sort by free and public.",
+      "cost": "Varies; many free",
+      "contact_route": "Event calendar at cic.com/events",
+      "rank": 9,
+      "why_you_why_now": "CIC's free public gatherings are packed with Northeastern co-ops, BU interns, and young professionals who regularly coordinate group outings and campus-adjacent events.",
+      "opener": "What is the best campus or local Boston event you've gone to this month?"
+    },
+    {
+      "id": "org-masschallenge",
+      "type": "person_org",
+      "name": "MassChallenge (org)",
+      "url": "https://masschallenge.org/contact/",
+      "date_or_cadence": "Year-round; cohort applications annual",
+      "who_it_serves": "Early-stage startups in any sector, worldwide but Boston-headquartered",
+      "tags": [
+        "accelerator",
+        "equity-free",
+        "boston",
+        "intro-path",
+        "mentors"
+      ],
+      "why_it_matters": "Beyond the cohort, the staff run mentor matching and community events — a polite note explaining your stage often gets you pointed at the right programme or mentor even outside cohort season.",
+      "cost": "Free",
+      "contact_route": "Public contact form on masschallenge.org/contact",
+      "rank": 10,
+      "why_you_why_now": "Connecting with MassChallenge community leads gives you access to consumer marketplace mentors who have navigated Boston university campus distribution campaigns.",
+      "draft": {
+        "channel": "email",
+        "subject": "Early-stage student marketplace founder inquiry",
+        "body": "Hi MassChallenge Team, I am a Boston founder building a peer-to-peer ticket splitting tool for Northeastern undergrads. As we launch our initial pilot, I'd love to learn about open community workshops or office hours available to early-stage student founders in Boston. Thanks, [Name]"
+      }
+    }
+  ],
+  "week_one": {
+    "actions": [
+      {
+        "id": "act-1",
+        "day": "Monday",
+        "duration": "30 mins",
+        "time": "10:00 AM",
+        "title": "Send coaching inquiry to Innovate@BU",
+        "detail": "Submit the drafted email to Innovate@BU requesting to attend their upcoming open coaching hours to discuss cross-campus student pilot distribution.",
+        "itemIds": [
+          "org-bu-innovate"
+        ]
+      },
+      {
+        "id": "act-2",
+        "day": "Tuesday",
+        "duration": "45 mins",
+        "time": "1:00 PM",
+        "title": "Run discovery discussion on r/boston",
+        "detail": "Post a non-promotional discussion thread on r/boston asking local college students how they currently split last-minute tickets for hockey games and local concerts.",
+        "itemIds": [
+          "chn-reddit-boston"
+        ]
+      },
+      {
+        "id": "act-3",
+        "day": "Wednesday",
+        "duration": "45 mins",
+        "time": "2:00 PM",
+        "title": "Apply for Boston New Technology showcase and SCORE mentorship",
+        "detail": "Submit your presenter application on the BNT Meetup group for an upcoming 5-minute showcase, then submit the SCORE mentor request form for marketplace advice.",
+        "itemIds": [
+          "evt-boston-new-tech",
+          "org-score-boston"
+        ]
+      },
+      {
+        "id": "act-4",
+        "day": "Thursday",
+        "duration": "90 mins",
+        "time": "5:30 PM",
+        "title": "Attend Harvard i-lab public workshop and test event opener",
+        "detail": "Head to the weekly public i-lab event in Allston and introduce yourself to three student club organizers using your prepared event opener.",
+        "itemIds": [
+          "evt-harvard-ilab-events"
+        ]
+      },
+      {
+        "id": "act-5",
+        "day": "Friday",
+        "duration": "30 mins",
+        "time": "11:00 AM",
+        "title": "Post campus ambassador inquiry in Startup Boston Slack",
+        "detail": "Join the Startup Boston community Slack and ask local community builders for recommendations on recruiting undergrad campus reps.",
+        "itemIds": [
+          "chn-startup-boston-newsletter"
+        ]
+      }
+    ],
+    "total_time": "4 hr"
+  }
+}
