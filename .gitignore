@@ -44,3 +44,11 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Secrets — never commit. Rotate anything that lands here by accident.
+.env
+.env.*
+!.env.example
+
+# loop.sh execution state
+/specs/*

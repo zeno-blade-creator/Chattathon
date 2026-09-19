@@ -2,15 +2,16 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { colors, radius, space, type } from '../theme';
 
-import type { Option } from '../types';
-
-interface Props<T extends string> {
+interface Props {
   label: string;
   hint?: string;
-  /** The slug is stored, the label is shown. They are not interchangeable. */
-  options: Option<T>[];
-  value: T | '';
-  onChange: (v: T) => void;
+  /**
+   * The labels a founder reads. The database-accepted code is looked up from
+   * STAGE_VALUES / GOAL_VALUES at submit — see src/types.ts.
+   */
+  options: readonly string[];
+  value: string;
+  onChange: (v: string) => void;
   index: number;
 }
 
@@ -18,14 +19,7 @@ interface Props<T extends string> {
  * Single-select chips. Used for stage and goal — both are closed sets, and
  * tapping is faster than typing when the founder is on a phone.
  */
-export function ChoiceGroup<T extends string>({
-  label,
-  hint,
-  options,
-  value,
-  onChange,
-  index,
-}: Props<T>) {
+export function ChoiceGroup({ label, hint, options, value, onChange, index }: Props) {
   return (
     <View style={styles.wrap}>
       <View style={styles.labelRow}>
@@ -35,11 +29,11 @@ export function ChoiceGroup<T extends string>({
       {hint ? <Text style={styles.hint}>{hint}</Text> : null}
       <View style={styles.options}>
         {options.map((opt) => {
-          const selected = opt.value === value;
+          const selected = opt === value;
           return (
             <Pressable
-              key={opt.value}
-              onPress={() => onChange(opt.value)}
+              key={opt}
+              onPress={() => onChange(opt)}
               accessibilityRole="radio"
               accessibilityState={{ selected }}
               style={({ pressed }) => [
@@ -48,9 +42,7 @@ export function ChoiceGroup<T extends string>({
                 pressed && styles.chipPressed,
               ]}
             >
-              <Text style={[styles.chipText, selected && styles.chipTextSelected]}>
-                {opt.label}
-              </Text>
+              <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{opt}</Text>
             </Pressable>
           );
         })}

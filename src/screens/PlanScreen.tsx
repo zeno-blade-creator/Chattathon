@@ -1,29 +1,40 @@
-import { useMemo, useState, type MutableRefObject } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { weekOneToText } from '../bucket';
 import { CopyButton } from '../components/CopyButton';
 import { PlanItemCard } from '../components/PlanItemCard';
-import { saveItemStatus } from '../lib/corpus';
 import { colors, radius, shadow, space, type } from '../theme';
 import { BUCKETS, type ItemStatus, type Plan } from '../types';
 
 interface Props {
   plan: Plan;
-  /** Ref, not value — the id arrives from Supabase after this screen mounts. */
-  profileId: MutableRefObject<string | null>;
   onRestart: () => void;
+  /**
+   * True when live generation failed and this is the recorded example plan.
+   * It was built for a different founder, so we say so rather than passing it
+   * off as theirs — the same honesty the unsupported-city screen shows.
+   */
+  fallbackUsed?: boolean;
 }
 
-export function PlanScreen({ plan, profileId, onRestart }: Props) {
-  // MVP+: per-item progress. Optimistic locally, mirrored to item_status so a
-  // later generation can skip what this founder already did.
+/**
+ * plan.generatedAt is an ISO string. Rendering it raw put
+ * "2026-09-19T18:36:46.130Z" in the header of every screenshot.
+ */
+function formatGeneratedAt(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
+export function PlanScreen({ plan, onRestart, fallbackUsed = false }: Props) {
+  // MVP+: per-item progress. Kept in the screen for now; this is the state a
+  // future generation would read to avoid repeating what's already been done.
   const [statuses, setStatuses] = useState<Record<string, ItemStatus>>({});
 
-  const setStatus = (id: string, s: ItemStatus) => {
+  const setStatus = (id: string, s: ItemStatus) =>
     setStatuses((prev) => ({ ...prev, [id]: s }));
-    void saveItemStatus(profileId.current, id, s);
-  };
 
   const handled = useMemo(
     () => plan.items.filter((i) => (statuses[i.id] ?? 'todo') !== 'todo').length,
@@ -37,9 +48,20 @@ export function PlanScreen({ plan, profileId, onRestart }: Props) {
 
   return (
     <ScrollView style={styles.flex} contentContainerStyle={styles.content}>
+      {fallbackUsed ? (
+        <View style={styles.fallbackNote}>
+          <Text style={styles.fallbackTitle}>Example plan</Text>
+          <Text style={styles.fallbackBody}>
+            We couldn't reach the live generator, so this is a real plan we
+            generated earlier — for a different founder. The opportunities and
+            links are genuine; the reasoning is not about your product.
+          </Text>
+        </View>
+      ) : null}
+
       <View style={styles.headerRow}>
         <Text style={styles.eyebrow}>
-          {plan.city} · {plan.generatedAt}
+          {plan.city} · {formatGeneratedAt(plan.generatedAt)}
         </Text>
         <Pressable onPress={onRestart} style={({ pressed }) => pressed && styles.pressed}>
           <Text style={styles.restart}>Start over</Text>
@@ -118,6 +140,23 @@ function WeekOne({ plan }: { plan: Plan }) {
 }
 
 const styles = StyleSheet.create({
+  fallbackNote: {
+    backgroundColor: colors.accentSoft,
+    borderColor: colors.accent,
+    borderWidth: 1,
+    borderRadius: radius.md,
+    padding: space.md,
+    marginBottom: space.md,
+  },
+  fallbackTitle: {
+    ...type.label,
+    color: colors.accent,
+    marginBottom: space.xs,
+  },
+  fallbackBody: {
+    ...type.body,
+    color: colors.ink,
+  },
   flex: { flex: 1 },
   content: {
     padding: space.xl,
@@ -132,7 +171,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: space.md,
   },
-  // Section labels are mid green; the view's one amber element is Copy plan.
+  // Section labels are mid green. On this view amber is reserved for the
+  // fallback banner, which only appears when the plan is not the real one.
   eyebrow: { ...type.label, color: colors.midGreen },
   restart: { ...type.smallStrong, color: colors.inkMuted },
   pressed: { opacity: 0.6 },

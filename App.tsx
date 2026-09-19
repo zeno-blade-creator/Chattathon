@@ -1,75 +1,62 @@
-import { useCallback, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import { buildProfile } from './lib/profile.mjs';
-import { SAMPLE_PLAN } from './src/data/samplePlan';
-import { saveProfile } from './src/lib/corpus';
+import { generatePlan, type GenerateResult } from './src/api';
 import { IntakeScreen } from './src/screens/IntakeScreen';
 import { LoadingScreen } from './src/screens/LoadingScreen';
 import { PlanScreen } from './src/screens/PlanScreen';
-import { colors } from './src/theme';
+import { colors, radius, space, type } from './src/theme';
 import type { IntakeProfile, Plan } from './src/types';
 
-type Route = 'intake' | 'loading' | 'plan';
+type View_ = 'intake' | 'loading' | 'plan' | 'blocked';
 
 export default function App() {
-  const [route, setRoute] = useState<Route>('intake');
+  const [view, setView] = useState<View_>('intake');
   const [plan, setPlan] = useState<Plan | null>(null);
-  /**
-   * The founder_profiles row id. Needed to write item_status, and it only
-   * exists client-side — RLS grants the anon key INSERT but not SELECT, so it
-   * can never be read back.
-   */
-  const profileId = useRef<string | null>(null);
+  const [notice, setNotice] = useState<string>('');
+  const [fallbackUsed, setFallbackUsed] = useState(false);
 
-  const onGenerate = useCallback((raw: IntakeProfile) => {
-    setRoute('loading');
+  // Generation takes ~20-25s; the loading animation is shorter. We hold the
+  // result until the animation has also finished so the transition never
+  // snaps mid-sentence, and never cuts the plan off early either.
+  const result = useRef<GenerateResult | null>(null);
+  const [animDone, setAnimDone] = useState(false);
+  const [settled, setSettled] = useState(false);
 
-    // Person A's buildProfile does the validation, normalisation and signal
-    // derivation. Persisting is fire-and-forget on purpose: a Supabase outage
-    // must not stop the plan rendering.
-    try {
-      const built = buildProfile({
-        building: raw.building,
-        city: raw.city,
-        stage: raw.stage as Exclude<IntakeProfile['stage'], ''>,
-        customer: raw.customer,
-        goal: raw.goal as Exclude<IntakeProfile['goal'], ''>,
-        already_tried: raw.tried || null,
-      });
-      saveProfile(built)
-        .then(({ id }) => {
-          profileId.current = id;
-        })
-        .catch(() => {
-          /* degraded, not fatal */
-        });
-    } catch (err) {
-      // The intake screen already blocks invalid submissions; this is the
-      // belt-and-braces path if the two validators ever disagree.
-      console.warn('[app] profile rejected by buildProfile', err);
+  const onGenerate = (p: IntakeProfile) => {
+    result.current = null;
+    setAnimDone(false);
+    setSettled(false);
+    setView('loading');
+    generatePlan(p).then((r) => { result.current = r; setSettled(true); });
+  };
+
+  useEffect(() => {
+    if (!settled || !animDone) return;
+    const r = result.current;
+    if (!r) return;
+    if (r.status === 'ready') {
+      setPlan(r.plan); setFallbackUsed(r.fallbackUsed); setView('plan'); return;
     }
-  }, []);
+    setNotice(
+      r.status === 'unsupported_city'
+        ? r.message
+        : `Generation failed: ${r.error}. Check the server is running on :8787.`,
+    );
+    setView('blocked');
+  }, [settled, animDone]);
 
-  // TODO(Person B): replace with the single batched model call, then read the
-  // result from generated_plans. The UI already renders pending/ready/failed.
-  const onLoaded = useCallback(() => {
-    setPlan(SAMPLE_PLAN);
-    setRoute('plan');
-  }, []);
-
-  const onRestart = useCallback(() => {
-    setPlan(null);
-    profileId.current = null;
-    setRoute('intake');
-  }, []);
+  const onRestart = () => {
+    setPlan(null); setNotice(''); setFallbackUsed(false); result.current = null;
+    setAnimDone(false); setSettled(false); setView('intake');
+  };
 
   // The home screen's hero runs to the top of the display, so the inset above
   // it is painted deep green and the status bar icons flip to light. Every
-  // other route is a light page.
-  const onHero = route === 'intake';
+  // other view is a light page.
+  const onHero = view === 'intake';
 
   return (
     <SafeAreaProvider>
@@ -78,10 +65,17 @@ export default function App() {
         edges={['top', 'left', 'right']}
       >
         <View style={styles.root}>
-          {route === 'intake' ? <IntakeScreen onGenerate={onGenerate} /> : null}
-          {route === 'loading' ? <LoadingScreen onDone={onLoaded} /> : null}
-          {route === 'plan' && plan ? (
-            <PlanScreen plan={plan} profileId={profileId} onRestart={onRestart} />
+          {view === 'intake' ? <IntakeScreen onGenerate={onGenerate} /> : null}
+          {view === 'loading' ? <LoadingScreen onDone={() => setAnimDone(true)} /> : null}
+          {view === 'plan' && plan ? <PlanScreen plan={plan} onRestart={onRestart} fallbackUsed={fallbackUsed} /> : null}
+          {view === 'blocked' ? (
+            <View style={styles.blocked}>
+              <Text style={styles.blockedTitle}>We cover Boston today</Text>
+              <Text style={styles.blockedBody}>{notice}</Text>
+              <Pressable onPress={onRestart} style={styles.button}>
+                <Text style={styles.buttonText}>Start again</Text>
+              </Pressable>
+            </View>
           ) : null}
         </View>
         <StatusBar style={onHero ? 'light' : 'dark'} />
@@ -94,4 +88,10 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   safeHero: { backgroundColor: colors.deepGreen },
   root: { flex: 1, backgroundColor: colors.bg },
+  blocked: { flex: 1, justifyContent: 'center', padding: space.lg, gap: space.md },
+  blockedTitle: { ...type.title, color: colors.ink },
+  blockedBody: { ...type.body, color: colors.inkMuted },
+  button: { alignSelf: 'flex-start', backgroundColor: colors.ink,
+            paddingVertical: space.sm, paddingHorizontal: space.lg, borderRadius: radius.md },
+  buttonText: { ...type.body, color: colors.bg, fontWeight: '600' },
 });

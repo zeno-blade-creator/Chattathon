@@ -7,25 +7,13 @@
  */
 
 /** The three buckets from the spec. Also drives colour and ordering. */
-import type { Goal, Stage } from '../lib/profile.mjs';
-
-export type { Goal, Stage };
-
 export type ItemType = 'event' | 'person_org' | 'channel';
-
-/**
- * Generation status, from `generated_plans.status` (migration 002). The UI
- * renders all three — "failed" is a state we show honestly, not a crash.
- */
-export type PlanStatus = 'pending' | 'ready' | 'failed';
 
 /**
  * A single verified corpus entry. This is Person A's agreed schema, field for
  * field — do not add or rename keys without agreeing the change.
  */
 export interface CorpusEntry {
-  /** Stable slug, e.g. 'evt-venture-cafe-thursday'. Primary key in Supabase. */
-  id: string;
   type: ItemType;
   name: string;
   url: string;
@@ -38,8 +26,6 @@ export interface CorpusEntry {
   cost: string;
   /** Public organisational route only: a contact page, a published tip line, a mod mail. */
   contact_route: string;
-  /** ISO date. Operational, not part of Person B's prompt contract. */
-  last_verified?: string;
 }
 
 /**
@@ -48,6 +34,13 @@ export interface CorpusEntry {
  * without it.
  */
 export interface PlanItem extends CorpusEntry {
+  id: string;
+  /**
+   * 'live' means Tavily retrieved this from the web at request time rather
+   * than it coming from the hand-verified corpus. Both are real URLs; only the
+   * provenance differs, so badge it if you want to be explicit.
+   */
+  source?: 'live';
   /** 1-10 across the whole plan, not per bucket. */
   rank: number;
   why_you_why_now: string;
@@ -92,43 +85,60 @@ export interface Plan {
   };
 }
 
-/**
- * F1 intake — the six fields, nothing more.
- *
- * `stage` and `goal` carry the slug values, not the label the founder reads.
- * Both are CHECK-constrained in `supabase/schema.sql`, and `deriveSignals()`
- * keys off the slugs — sending "Launched, few users" instead of "launched"
- * silently produces an empty signal set and a worse plan.
- */
+/** F1 intake — the six fields, nothing more. */
 export interface IntakeProfile {
   building: string;
   city: string;
-  stage: Stage | '';
+  stage: string;
   customer: string;
-  goal: Goal | '';
+  goal: string;
   tried: string;
 }
 
-/** A selectable option: slug stored, label shown. */
-export interface Option<T> {
-  value: T;
-  label: string;
-}
+/**
+ * The chips a founder taps, and the exact value the database accepts.
+ *
+ * founder_profiles.stage and .goal are CHECK-constrained columns. Submitting
+ * the label ("Pilot customers") is rejected by Postgres; only the code
+ * ("pilot-customers") inserts. Keep these two lists 1:1 — the label is what a
+ * human reads, the value is what the row stores.
+ */
+export const STAGE_OPTIONS = [
+  'Just an idea',
+  'Building it',
+  'Launched, few users',
+  'Launched, growing',
+  'Raising',
+] as const;
 
-export const STAGE_OPTIONS: Option<Stage>[] = [
-  { value: 'idea', label: 'Just an idea' },
-  { value: 'building', label: 'Building it' },
-  { value: 'launched', label: 'Launched' },
-  { value: 'early-revenue', label: 'Early revenue' },
-  { value: 'raising', label: 'Raising' },
-];
+export const STAGE_VALUES: Record<string, string> = {
+  'Just an idea': 'idea',
+  'Building it': 'building',
+  'Launched, few users': 'launched',
+  'Launched, growing': 'early-revenue',
+  'Raising': 'raising',
+};
 
-export const GOAL_OPTIONS: Option<Goal>[] = [
-  { value: 'users', label: 'Users' },
-  { value: 'pilot-customers', label: 'Pilot customers' },
-  { value: 'funding', label: 'Funding' },
-  { value: 'press', label: 'Press' },
-];
+/**
+ * Must stay a subset of GOALS in lib/profile.mjs, which is itself pinned to the
+ * CHECK constraint on founder_profiles.goal. 'Cofounders' and 'Mentors' were
+ * offered here but accepted by neither, so picking them threw inside
+ * buildProfile and generatePlanSafe quietly served the canned fallback plan.
+ * scripts/test-intake-contract.mjs enforces the subset.
+ */
+export const GOAL_OPTIONS = [
+  'Users',
+  'Pilot customers',
+  'Funding',
+  'Press',
+] as const;
+
+export const GOAL_VALUES: Record<string, string> = {
+  'Users': 'users',
+  'Pilot customers': 'pilot-customers',
+  'Funding': 'funding',
+  'Press': 'press',
+};
 
 /** MVP+ — per-item progress so a second generation can avoid repeats. */
 export type ItemStatus = 'todo' | 'done' | 'skipped';
