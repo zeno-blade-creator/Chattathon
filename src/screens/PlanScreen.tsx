@@ -18,6 +18,16 @@ interface Props {
   fallbackUsed?: boolean;
 }
 
+/**
+ * plan.generatedAt is an ISO string. Rendering it raw put
+ * "2026-09-19T18:36:46.130Z" in the header of every screenshot.
+ */
+function formatGeneratedAt(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
 export function PlanScreen({ plan, onRestart, fallbackUsed = false }: Props) {
   // MVP+: per-item progress. Kept in the screen for now; this is the state a
   // future generation would read to avoid repeating what's already been done.
@@ -51,7 +61,7 @@ export function PlanScreen({ plan, onRestart, fallbackUsed = false }: Props) {
 
       <View style={styles.headerRow}>
         <Text style={styles.eyebrow}>
-          {plan.city} · {plan.generatedAt}
+          {plan.city} · {formatGeneratedAt(plan.generatedAt)}
         </Text>
         <Pressable onPress={onRestart} style={({ pressed }) => pressed && styles.pressed}>
           <Text style={styles.restart}>Start over</Text>
