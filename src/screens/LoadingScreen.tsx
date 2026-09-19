@@ -104,7 +104,7 @@ export function LoadingScreen({ onDone }: Props) {
 const styles = StyleSheet.create({
   wrap: { flex: 1, justifyContent: 'center', padding: space.xl },
   inner: { maxWidth: 520, width: '100%', alignSelf: 'center' },
-  eyebrow: { ...type.label, color: colors.accent, marginBottom: space.lg },
+  eyebrow: { ...type.label, color: colors.midGreen, marginBottom: space.lg },
   track: {
     height: 3,
     backgroundColor: colors.line,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: space.xl,
   },
-  fill: { height: 3, backgroundColor: colors.ink, borderRadius: radius.pill },
+  fill: { height: 3, backgroundColor: colors.deepGreen, borderRadius: radius.pill },
   steps: { gap: space.md },
   stepRow: { flexDirection: 'row', alignItems: 'flex-start', gap: space.md },
   marker: {
@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
     width: 14,
     textAlign: 'center',
   },
-  markerDone: { color: colors.done },
+  markerDone: { color: colors.midGreen },
+  /** The Loading view's single amber element. */
   markerActive: { color: colors.accent },
   stepText: { ...type.body, color: colors.inkMuted, flex: 1 },
   stepPending: { color: colors.inkFaint },

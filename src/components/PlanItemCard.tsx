@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     gap: space.md,
   },
   link: { alignSelf: 'flex-start' },
-  linkText: { ...type.small, color: colors.accent, fontWeight: '600' },
+  linkText: { ...type.small, color: colors.midGreen, fontWeight: '600' },
   pressed: { opacity: 0.6 },
 
   statusRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm, flexWrap: 'wrap' },
@@ -231,5 +231,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.lg,
   },
   toggleText: { ...type.smallStrong, color: colors.inkMuted },
-  toggleTextActive: { color: '#FFFFFF' },
+  toggleTextActive: { color: colors.onDark },
 });

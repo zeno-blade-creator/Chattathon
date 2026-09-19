@@ -62,7 +62,7 @@ export function ChoiceGroup<T extends string>({
 const styles = StyleSheet.create({
   wrap: { marginBottom: space.xl },
   labelRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  index: { ...type.label, color: colors.accent, width: 16 },
+  index: { ...type.label, color: colors.midGreen, width: 16 },
   label: { ...type.heading, color: colors.ink, flex: 1 },
   hint: { ...type.small, color: colors.inkFaint, marginTop: 2, marginLeft: 24 },
   options: {
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     paddingVertical: space.sm + 1,
     paddingHorizontal: space.lg,
   },
-  chipSelected: { backgroundColor: colors.ink, borderColor: colors.ink },
+  chipSelected: { backgroundColor: colors.deepGreen, borderColor: colors.deepGreen },
   chipPressed: { opacity: 0.7 },
   chipText: { ...type.small, fontWeight: '600', color: colors.inkMuted },
-  chipTextSelected: { color: colors.bg },
+  chipTextSelected: { color: colors.onDark },
 });

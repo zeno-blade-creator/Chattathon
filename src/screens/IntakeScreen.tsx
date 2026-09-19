@@ -194,19 +194,26 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
-  eyebrow: { ...type.label, color: colors.accent, marginBottom: space.md },
+  eyebrow: { ...type.label, color: colors.midGreen, marginBottom: space.md },
   display: { ...type.display, color: colors.ink, marginBottom: space.md },
   sub: { ...type.body, color: colors.inkMuted },
   demoLink: { marginTop: space.lg, alignSelf: 'flex-start' },
-  demoLinkText: { ...type.smallStrong, color: colors.accent },
+  demoLinkText: { ...type.smallStrong, color: colors.midGreen },
+  /**
+   * The Intake view's single amber element. A short filled rule rather than
+   * amber text — at 2px of solid colour it carries the accent without the
+   * contrast problem small amber type has on the near-white page.
+   */
   rule: {
-    height: 1,
-    backgroundColor: colors.line,
+    height: 2,
+    width: 48,
+    backgroundColor: colors.accent,
+    borderRadius: radius.pill,
     marginVertical: space.xl,
   },
-  missing: { ...type.small, color: colors.accent, marginBottom: space.md },
+  missing: { ...type.small, color: colors.midGreen, marginBottom: space.md },
   cta: {
-    backgroundColor: colors.ink,
+    backgroundColor: colors.deepGreen,
     borderRadius: radius.md,
     paddingVertical: space.lg,
     alignItems: 'center',
@@ -214,7 +221,7 @@ const styles = StyleSheet.create({
     ...shadow,
   },
   ctaPressed: { opacity: 0.8 },
-  ctaText: { ...type.heading, color: colors.bg },
+  ctaText: { ...type.heading, color: colors.onDark },
   footnote: {
     ...type.small,
     color: colors.inkFaint,
@@ -228,11 +235,16 @@ const styles = StyleSheet.create({
     marginBottom: space.xl,
     marginTop: -space.md,
     borderWidth: 1,
-    borderColor: '#F0D9C6',
+    borderColor: colors.accentLine,
   },
   outOfAreaTitle: { ...type.bodyStrong, color: colors.ink, marginBottom: space.sm },
   outOfAreaBody: { ...type.small, color: colors.inkMuted },
-  outOfAreaReason: { ...type.small, color: colors.accent, marginTop: space.sm, fontWeight: '600' },
+  outOfAreaReason: {
+    ...type.small,
+    color: colors.deepGreen,
+    marginTop: space.sm,
+    fontWeight: '600',
+  },
   waitlist: {
     marginTop: space.md,
     backgroundColor: colors.accent,
@@ -241,5 +253,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.lg,
     alignSelf: 'flex-start',
   },
-  waitlistText: { ...type.smallStrong, color: '#FFFFFF' },
+  waitlistText: { ...type.smallStrong, color: colors.deepGreen },
 });
