@@ -1,36 +1,55 @@
-# Contract for A (backend) and C (frontend) — from B (generation)
+# Generation layer (Person B) — how to run it and how to call it
 
-Repo: https://github.com/zeno-blade-creator/Chattathon
-Branch with this contract: `main`. My work lands on `feat/ai-generation-layer`.
+## Run it
+```bash
+npm install
+node --env-file=.env server.mjs      # http://localhost:8787
+```
+`.env` needs `GEMINI_API_KEY`, `TAVILY_API_KEY`, `SUPABASE_URL`,
+`SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`. It is gitignored. Keep it that way.
 
-**Build to this shape and we merge in ten minutes instead of an hour.**
+## Call it
+```
+POST http://localhost:8787/generate     { building, city, neighbourhood?, stage, customer, goal, tried? }
+GET  http://localhost:8787/health
+```
+Responses:
+- `{ status:'ready', plan, profileId, fallbackUsed, ms }` — `plan` matches `src/types.ts`
+- `{ status:'unsupported_city', city, message }` — render the honest waitlist state
+- `{ status:'failed', error }` — 500, should not happen; the fallback catches first
 
-## Person A — backend / login / Supabase
-1. Run `supabase/schema.sql` in the Supabase SQL editor, unedited. Three tables:
-   `profiles` (intake), `plans` (what I write), `item_status` (checklist).
-2. Send me, in a DM, not a commit:
-   - `SUPABASE_URL`
-   - `SUPABASE_SERVICE_ROLE_KEY` (server-side only — it bypasses RLS, so it must never
-     reach the frontend bundle)
-   Person C gets the **anon** key instead.
-3. Do not rename columns. If you need a new field, add it — additive is free, renames break me.
-4. `plans.payload` is a single `jsonb` blob matching `contracts/plan.schema.json`. You do
-   not need to model it relationally. Don't.
+Takes **~20–25s**. The loading screen needs to survive that.
 
-## Person C — frontend
-1. `contracts/plan.schema.json` is the exact shape you will receive. Build against
-   `fixtures/sample-plan.json` (committed on my branch) **right now** — do not wait for me.
-2. Three states to render: `pending` (loading), `ready` (the plan), `failed`.
-3. `coverage.city_supported === false` → render the honest "we cover Boston today" state,
-   not an empty plan. This is a feature we pitch, not an error.
-4. Per item you get: `name`, `url`, `why_you_why_now` (the hero line — make it prominent),
-   `date_or_cadence`, `location` for the map pin, `contact_route`, and `pitch.body`
-   (needs a copy button). `verified: true` can carry a small badge.
-5. `week_one[]` is the checklist. `item_id` is stable — write toggles to `item_status`.
+## Why there is a server at all
+API keys are passwords. Anything in the Expo bundle is public, and this repo is
+public. The server holds the keys; the app only ever sends a profile. It also
+holds the Supabase *service* key, which is how plans can be read back — the
+anon key deliberately cannot.
 
-## Shared rules
-- Every `url` is real and fetched. Nothing on the page is invented. If we can't source it,
-  it doesn't render. That claim is our whole credibility with the judges.
-- City is locked to Boston for the demo. Anything else returns `city_supported: false`.
-- `stage` (idea|building|launched|revenue|raising) changes which items rank, so the intake
-  form must collect it.
+## The no-hallucination guarantee, mechanically
+The model is never trusted with a fact. It receives candidates and returns only
+judgement — `rank`, `why_you_why_now`, `draft`, `opener` — keyed by id. Every
+factual field (`name`, `url`, `date_or_cadence`, `cost`, `contact_route`) is
+copied from the corpus *after* the model answers. Ids that were not in
+`allowed_ids` are dropped. An invented event cannot reach the page.
+
+Two sources, both real:
+- **corpus** — 60 hand-verified Boston entries in Supabase. The spine.
+- **`source:'live'`** — found via Tavily at request time (campus clubs, this
+  month's events). Real retrieved URLs, never authored. Badge these differently
+  if you like.
+
+## What Person C still needs to change
+1. `STAGE_OPTIONS` / `GOAL_OPTIONS` must submit the enum values, not the labels:
+   `'Just an idea'→'idea'`, `'Building it'→'building'`, `'Launched, few users'→'launched'`,
+   `'Launched, growing'→'early-revenue'`, plus a new `'raising'`.
+   Goals: `'users' | 'pilot-customers' | 'funding' | 'press' | 'cofounders' | 'mentors'`.
+   The server normalises labels anyway, but the database CHECK is the real gate.
+2. Replace the `SAMPLE_PLAN` import in `App.tsx` with a POST to `/generate`.
+3. Handle `status:'unsupported_city'`.
+
+## What Person A still needs to run
+`supabase/002-generation-layer.sql` — additive. Widens the `goal` CHECK (the UI
+can currently submit values that fail it, and cofounder/mentor goals were
+missing), adds `item_status` for the checklist, adds `status`/`fallback_used`
+to `generated_plans`.
