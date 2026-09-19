@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 
 import { SUPPORTED_CITY } from '../cityGuard';
+import { CORPUS_SIZE } from '../data/samplePlan';
 import { colors, radius, space, type } from '../theme';
 
 /**
@@ -11,7 +12,7 @@ import { colors, radius, space, type } from '../theme';
  */
 const STEPS = [
   `Reading your profile against the ${SUPPORTED_CITY} corpus`,
-  'Ranking 60 verified local opportunities',
+  `Ranking ${CORPUS_SIZE} verified local opportunities`,
   'Picking the ten that fit your stage and goal',
   'Writing your pitch for each one',
   'Laying out your week',
@@ -93,9 +94,8 @@ export function LoadingScreen({ onDone }: Props) {
         </View>
 
         <Text style={styles.note}>
-          The {SUPPORTED_CITY} corpus is already on disk, so the plan is built from
-          entries a human has verified — and one live pass adds anything new this
-          month. One batched model call, pennies a plan.
+          The {SUPPORTED_CITY} corpus is already on disk — nothing is being searched live,
+          so this costs pennies and can't fail on stage.
         </Text>
       </View>
     </View>

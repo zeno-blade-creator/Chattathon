@@ -18,13 +18,20 @@ import type { IntakeProfile, Plan } from '../types';
 
 export const SUPPORTED_CITY = 'Boston';
 
+/**
+ * Entries in data/corpus.boston.json. Stated to the user on the loading
+ * screen, so it has to be true — scripts/test-corpus-claims.mjs asserts it
+ * against the file and fails the build when the corpus grows.
+ */
+export const CORPUS_SIZE = 60;
+
 /** Pre-filled so the intake screen can be demoed without typing six fields. */
 export const SAMPLE_PROFILE: IntakeProfile = {
   building: 'Cinch — an app that finds you a pickup basketball or soccer game happening near you in the next two hours.',
   city: 'Boston — Allston & Cambridge',
-  stage: 'launched',
+  stage: 'Launched, few users',
   customer: 'People 22–35 who recently moved to the city and want to play sport without joining a league.',
-  goal: 'users',
+  goal: 'Users',
   tried: 'Posted twice on Instagram, put flyers up in two gyms. Got about 40 signups, most went cold.',
 };
 

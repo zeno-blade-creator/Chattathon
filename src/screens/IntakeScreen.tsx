@@ -17,7 +17,7 @@ import { HeroBackdrop } from '../components/HeroBackdrop';
 import { checkCity, SUPPORTED_CITY } from '../cityGuard';
 import { SAMPLE_PROFILE } from '../data/samplePlan';
 import { colors, radius, shadow, space, type } from '../theme';
-import { GOAL_OPTIONS, STAGE_OPTIONS, type Goal, type IntakeProfile, type Stage } from '../types';
+import { GOAL_OPTIONS, STAGE_OPTIONS, type IntakeProfile } from '../types';
 
 const EMPTY: IntakeProfile = {
   building: '',
@@ -98,12 +98,12 @@ export function IntakeScreen({ onGenerate }: Props) {
     !profile.customer.trim() ||
     !profile.goal;
 
-  const outOfArea = attempted && profile.city.trim() !== '' && !city.supported;
+  const outOfArea = attempted && !city.empty && !city.covered;
 
   const onSubmit = () => {
     setAttempted(true);
     if (missing) return;
-    if (!checkCity(profile.city).supported) return;
+    if (!checkCity(profile.city).covered) return;
     onGenerate(profile);
   };
 
@@ -183,9 +183,9 @@ export function IntakeScreen({ onGenerate }: Props) {
                 placeholder="Boston — Allston & Cambridge"
               />
 
-              {outOfArea ? <OutOfArea city={profile.city.trim()} reason={city.reason} /> : null}
+              {outOfArea ? <OutOfArea city={profile.city.trim()} reason={city.reason ?? null} /> : null}
 
-              <ChoiceGroup<Stage>
+              <ChoiceGroup
                 index={3}
                 label="Stage"
                 hint="This changes which items rank, so it is worth getting right."
@@ -204,7 +204,7 @@ export function IntakeScreen({ onGenerate }: Props) {
                 multiline
               />
 
-              <ChoiceGroup<Goal>
+              <ChoiceGroup
                 index={5}
                 label="Your goal for the next 90 days"
                 options={GOAL_OPTIONS}
