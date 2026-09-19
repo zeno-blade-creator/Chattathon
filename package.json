@@ -1,19 +1,38 @@
 {
-  "name": "hyperlocal-gtm-corpus",
+  "name": "chattathon",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "version": "0.1.0",
-  "description": "Founder profile, corpus adapter and matching layer for the Hyperlocal GTM Copilot",
+  "main": "index.ts",
+  "description": "Hyperlocal GTM Copilot — corpus, generation layer and Expo interface",
   "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "server": "node --env-file=.env server.mjs",
+    "generate": "node --env-file=.env scripts/demo-generate.mjs",
+    "fallback": "node --env-file=.env scripts/build-fallback.mjs",
     "validate": "node scripts/validate.mjs",
     "verify": "node scripts/verify-urls.mjs",
-    "seed": "node scripts/seed.mjs",
+    "seed": "node --env-file=.env scripts/seed.mjs",
     "match": "node scripts/demo-match.mjs",
-    "health": "node scripts/health.mjs",
-    "adversarial": "node scripts/adversarial.mjs",
-    "test": "node scripts/validate.mjs && node scripts/adversarial.mjs"
+    "health": "node --env-file=.env scripts/health.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.0"
+    "@expo/metro-runtime": "~57.0.16",
+    "@supabase/supabase-js": "^2.45.0",
+    "expo": "~57.0.24",
+    "expo-clipboard": "~57.0.2",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-web": "^0.21.2"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.2",
+    "typescript": "~6.0.3"
   }
 }
