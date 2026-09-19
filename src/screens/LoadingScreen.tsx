@@ -11,7 +11,7 @@ import { colors, radius, space, type } from '../theme';
  */
 const STEPS = [
   `Reading your profile against the ${SUPPORTED_CITY} corpus`,
-  'Ranking 50 verified local opportunities',
+  'Ranking 60 verified local opportunities',
   'Picking the ten that fit your stage and goal',
   'Writing your pitch for each one',
   'Laying out your week',
@@ -93,8 +93,9 @@ export function LoadingScreen({ onDone }: Props) {
         </View>
 
         <Text style={styles.note}>
-          The {SUPPORTED_CITY} corpus is already on disk — nothing is being searched live,
-          so this costs pennies and can't fail on stage.
+          The {SUPPORTED_CITY} corpus is already on disk, so the plan is built from
+          entries a human has verified — and one live pass adds anything new this
+          month. One batched model call, pennies a plan.
         </Text>
       </View>
     </View>
