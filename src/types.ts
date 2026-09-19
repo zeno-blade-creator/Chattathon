@@ -7,13 +7,25 @@
  */
 
 /** The three buckets from the spec. Also drives colour and ordering. */
+import type { Goal, Stage } from '../lib/profile.mjs';
+
+export type { Goal, Stage };
+
 export type ItemType = 'event' | 'person_org' | 'channel';
+
+/**
+ * Generation status, from `generated_plans.status` (migration 002). The UI
+ * renders all three — "failed" is a state we show honestly, not a crash.
+ */
+export type PlanStatus = 'pending' | 'ready' | 'failed';
 
 /**
  * A single verified corpus entry. This is Person A's agreed schema, field for
  * field — do not add or rename keys without agreeing the change.
  */
 export interface CorpusEntry {
+  /** Stable slug, e.g. 'evt-venture-cafe-thursday'. Primary key in Supabase. */
+  id: string;
   type: ItemType;
   name: string;
   url: string;
@@ -26,6 +38,8 @@ export interface CorpusEntry {
   cost: string;
   /** Public organisational route only: a contact page, a published tip line, a mod mail. */
   contact_route: string;
+  /** ISO date. Operational, not part of Person B's prompt contract. */
+  last_verified?: string;
 }
 
 /**
@@ -34,7 +48,6 @@ export interface CorpusEntry {
  * without it.
  */
 export interface PlanItem extends CorpusEntry {
-  id: string;
   /** 1-10 across the whole plan, not per bucket. */
   rank: number;
   why_you_why_now: string;
@@ -79,29 +92,43 @@ export interface Plan {
   };
 }
 
-/** F1 intake — the six fields, nothing more. */
+/**
+ * F1 intake — the six fields, nothing more.
+ *
+ * `stage` and `goal` carry the slug values, not the label the founder reads.
+ * Both are CHECK-constrained in `supabase/schema.sql`, and `deriveSignals()`
+ * keys off the slugs — sending "Launched, few users" instead of "launched"
+ * silently produces an empty signal set and a worse plan.
+ */
 export interface IntakeProfile {
   building: string;
   city: string;
-  stage: string;
+  stage: Stage | '';
   customer: string;
-  goal: string;
+  goal: Goal | '';
   tried: string;
 }
 
-export const STAGE_OPTIONS = [
-  'Just an idea',
-  'Building it',
-  'Launched, few users',
-  'Launched, growing',
-] as const;
+/** A selectable option: slug stored, label shown. */
+export interface Option<T> {
+  value: T;
+  label: string;
+}
 
-export const GOAL_OPTIONS = [
-  'Users',
-  'Pilot customers',
-  'Funding',
-  'Press',
-] as const;
+export const STAGE_OPTIONS: Option<Stage>[] = [
+  { value: 'idea', label: 'Just an idea' },
+  { value: 'building', label: 'Building it' },
+  { value: 'launched', label: 'Launched' },
+  { value: 'early-revenue', label: 'Early revenue' },
+  { value: 'raising', label: 'Raising' },
+];
+
+export const GOAL_OPTIONS: Option<Goal>[] = [
+  { value: 'users', label: 'Users' },
+  { value: 'pilot-customers', label: 'Pilot customers' },
+  { value: 'funding', label: 'Funding' },
+  { value: 'press', label: 'Press' },
+];
 
 /** MVP+ — per-item progress so a second generation can avoid repeats. */
 export type ItemStatus = 'todo' | 'done' | 'skipped';

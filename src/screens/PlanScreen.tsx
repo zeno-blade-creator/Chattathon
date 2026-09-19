@@ -1,24 +1,29 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type MutableRefObject } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { weekOneToText } from '../bucket';
 import { CopyButton } from '../components/CopyButton';
 import { PlanItemCard } from '../components/PlanItemCard';
+import { saveItemStatus } from '../lib/corpus';
 import { colors, radius, shadow, space, type } from '../theme';
 import { BUCKETS, type ItemStatus, type Plan } from '../types';
 
 interface Props {
   plan: Plan;
+  /** Ref, not value — the id arrives from Supabase after this screen mounts. */
+  profileId: MutableRefObject<string | null>;
   onRestart: () => void;
 }
 
-export function PlanScreen({ plan, onRestart }: Props) {
-  // MVP+: per-item progress. Kept in the screen for now; this is the state a
-  // future generation would read to avoid repeating what's already been done.
+export function PlanScreen({ plan, profileId, onRestart }: Props) {
+  // MVP+: per-item progress. Optimistic locally, mirrored to item_status so a
+  // later generation can skip what this founder already did.
   const [statuses, setStatuses] = useState<Record<string, ItemStatus>>({});
 
-  const setStatus = (id: string, s: ItemStatus) =>
+  const setStatus = (id: string, s: ItemStatus) => {
     setStatuses((prev) => ({ ...prev, [id]: s }));
+    void saveItemStatus(profileId.current, id, s);
+  };
 
   const handled = useMemo(
     () => plan.items.filter((i) => (statuses[i.id] ?? 'todo') !== 'todo').length,

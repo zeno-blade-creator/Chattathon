@@ -2,12 +2,15 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { colors, radius, space, type } from '../theme';
 
-interface Props {
+import type { Option } from '../types';
+
+interface Props<T extends string> {
   label: string;
   hint?: string;
-  options: readonly string[];
-  value: string;
-  onChange: (v: string) => void;
+  /** The slug is stored, the label is shown. They are not interchangeable. */
+  options: Option<T>[];
+  value: T | '';
+  onChange: (v: T) => void;
   index: number;
 }
 
@@ -15,7 +18,14 @@ interface Props {
  * Single-select chips. Used for stage and goal — both are closed sets, and
  * tapping is faster than typing when the founder is on a phone.
  */
-export function ChoiceGroup({ label, hint, options, value, onChange, index }: Props) {
+export function ChoiceGroup<T extends string>({
+  label,
+  hint,
+  options,
+  value,
+  onChange,
+  index,
+}: Props<T>) {
   return (
     <View style={styles.wrap}>
       <View style={styles.labelRow}>
@@ -25,11 +35,11 @@ export function ChoiceGroup({ label, hint, options, value, onChange, index }: Pr
       {hint ? <Text style={styles.hint}>{hint}</Text> : null}
       <View style={styles.options}>
         {options.map((opt) => {
-          const selected = opt === value;
+          const selected = opt.value === value;
           return (
             <Pressable
-              key={opt}
-              onPress={() => onChange(opt)}
+              key={opt.value}
+              onPress={() => onChange(opt.value)}
               accessibilityRole="radio"
               accessibilityState={{ selected }}
               style={({ pressed }) => [
@@ -38,7 +48,9 @@ export function ChoiceGroup({ label, hint, options, value, onChange, index }: Pr
                 pressed && styles.chipPressed,
               ]}
             >
-              <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{opt}</Text>
+              <Text style={[styles.chipText, selected && styles.chipTextSelected]}>
+                {opt.label}
+              </Text>
             </Pressable>
           );
         })}
