@@ -19,10 +19,11 @@
     "match": "node scripts/demo-match.mjs",
     "health": "node --env-file=.env scripts/health.mjs",
     "adversarial": "node scripts/adversarial.mjs",
-    "test": "node scripts/validate.mjs && node scripts/adversarial.mjs && node scripts/test-city-guard.mjs && node scripts/test-generate.mjs && node scripts/test-intake-contract.mjs",
+    "test": "node scripts/validate.mjs && node scripts/adversarial.mjs && node scripts/test-city-guard.mjs && node scripts/test-generate.mjs && node scripts/test-intake-contract.mjs && node scripts/test-gemini-budget.mjs",
     "test:city": "node scripts/test-city-guard.mjs",
     "test:generate": "node scripts/test-generate.mjs",
-    "test:contract": "node scripts/test-intake-contract.mjs"
+    "test:contract": "node scripts/test-intake-contract.mjs",
+    "test:gemini": "node scripts/test-gemini-budget.mjs"
   },
   "dependencies": {
     "@expo/metro-runtime": "~57.0.16",
