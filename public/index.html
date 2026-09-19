@@ -1,0 +1,150 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Misneach — your week in Boston</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root { --ink:#16181d; --mute:#6b7280; --line:#e5e7eb; --bg:#fbfbfa; --accent:#1c4ed8; }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",sans-serif; }
+  .wrap { max-width:760px; margin:0 auto; padding:48px 20px 96px }
+  h1 { font-size:30px; margin:0 0 6px; letter-spacing:-.02em }
+  .sub { color:var(--mute); margin:0 0 32px }
+  label { display:block; font-weight:600; font-size:13px; margin:18px 0 6px }
+  input,textarea,select { width:100%; padding:10px 12px; border:1px solid var(--line);
+    border-radius:8px; font:inherit; background:#fff }
+  textarea { min-height:70px; resize:vertical }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:14px }
+  button { margin-top:26px; padding:12px 22px; border:0; border-radius:8px;
+    background:var(--ink); color:#fff; font:600 15px/1 inherit; cursor:pointer }
+  button:disabled { opacity:.5; cursor:default }
+  .card { background:#fff; border:1px solid var(--line); border-radius:10px;
+    padding:18px 20px; margin:14px 0 }
+  .bucket { font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--mute); font-weight:700 }
+  .name { font-size:17px; font-weight:650; margin:4px 0 2px }
+  .meta { font-size:13px; color:var(--mute); margin-bottom:10px }
+  .why { margin:0 0 12px }
+  pre { white-space:pre-wrap; background:var(--bg); border:1px solid var(--line);
+    border-radius:8px; padding:12px; font:13px/1.5 ui-monospace,monospace; margin:0 }
+  .copy { margin-top:8px; padding:6px 12px; background:#fff; color:var(--ink);
+    border:1px solid var(--line); border-radius:6px; font-size:13px; cursor:pointer }
+  .week li { margin-bottom:8px }
+  .day { font-weight:650 }
+  .mins { color:var(--mute); font-size:13px }
+  .err { background:#fef2f2; border-color:#fecaca; color:#991b1b }
+  .foot { font-size:12px; color:var(--mute); margin-top:28px }
+  h2 { font-size:20px; margin:36px 0 4px; letter-spacing:-.01em }
+  a { color:var(--accent) }
+</style>
+
+<div class="wrap">
+  <h1>Your week in Boston</h1>
+  <p class="sub">Six questions. One plan: who to talk to, where to show up, what to say.</p>
+
+  <form id="f">
+    <label>What are you building?</label>
+    <textarea name="building" required
+      placeholder="An app that helps people find pickup sports games in their neighbourhood"></textarea>
+
+    <div class="row">
+      <div><label>Your city</label><input name="city" value="Boston" required></div>
+      <div><label>Neighbourhood <span class="mins">(optional)</span></label>
+        <input name="neighbourhood" placeholder="Jamaica Plain"></div>
+    </div>
+
+    <div class="row">
+      <div><label>Stage</label><select name="stage">
+        <option value="idea">Just an idea</option>
+        <option value="building">Building it</option>
+        <option value="launched" selected>Launched</option>
+        <option value="early-revenue">Early revenue</option>
+        <option value="raising">Raising</option>
+      </select></div>
+      <div><label>Goal for the next 90 days</label><select name="goal">
+        <option value="users" selected>Users</option>
+        <option value="pilot-customers">Pilot customers</option>
+        <option value="funding">Funding</option>
+        <option value="press">Press</option>
+      </select></div>
+    </div>
+
+    <label>Who is your customer?</label>
+    <input name="customer" required
+      placeholder="People in their 20s and 30s who just moved to the city">
+
+    <label>Anything you've already tried? <span class="mins">(optional)</span></label>
+    <textarea name="already_tried"
+      placeholder="Posted on Instagram, told friends. No budget, it's just me and I can't code."></textarea>
+
+    <button id="go">Build my week</button>
+  </form>
+
+  <div id="out"></div>
+</div>
+
+<script>
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+
+document.getElementById('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = document.getElementById('go');
+  const out = document.getElementById('out');
+  btn.disabled = true; btn.textContent = 'Reading the city…';
+  out.innerHTML = '';
+
+  const intake = Object.fromEntries(new FormData(e.target));
+  let r;
+  try {
+    r = await (await fetch('/api/plan', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(intake),
+    })).json();
+  } catch (err) {
+    out.innerHTML = `<div class="card err">Couldn't reach the server. ${esc(err.message)}</div>`;
+    btn.disabled = false; btn.textContent = 'Build my week'; return;
+  }
+
+  if (r.status === 'invalid') {
+    out.innerHTML = `<div class="card err"><b>Fix these first:</b><ul>${
+      r.errors.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>`;
+  } else if (r.status === 'unsupported_city') {
+    out.innerHTML = `<div class="card"><b>We only cover ${esc(r.supported)} today.</b>
+      <p class="why">You entered <b>${esc(r.city)}</b> — ${esc(r.reason)}. We'd rather say that
+      than invent a meetup that doesn't exist. Tell us where you are and we'll
+      add your city next.</p></div>`;
+  } else if (r.status === 'ok') {
+    const p = r.plan;
+    out.innerHTML =
+      `<h2>${esc(p.headline)}</h2>
+       <p class="sub">${p.items.length} opportunities · ${r.meta.total_minutes} minutes of work this week</p>
+       <h2>Week one</h2>
+       <div class="card"><ol class="week">${p.week_one.map(w =>
+         `<li><span class="day">${esc(w.day)}</span>
+          <span class="mins">· ${w.minutes} min</span><br>${esc(w.action)}</li>`).join('')}</ol></div>
+       <h2>The opportunities</h2>
+       ${p.items.map((i, n) => `
+         <div class="card">
+           <div class="bucket">${esc(i.bucket)}</div>
+           <div class="name"><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.name)}</a></div>
+           <div class="meta">${esc(i.when)} · ${esc(i.cost)} · ${esc(i.contact_route)}</div>
+           <p class="why">${esc(i.why_you_why_now)}</p>
+           ${i.draft ? `<pre id="d${n}">${esc(i.draft)}</pre>
+             <button class="copy" data-t="d${n}">Copy email</button>` : ''}
+           ${i.opener ? `<pre id="d${n}">${esc(i.opener)}</pre>
+             <button class="copy" data-t="d${n}">Copy</button>` : ''}
+         </div>`).join('')}
+       <p class="foot">Corpus: ${r.meta.corpus_size} verified Boston entries from
+         ${esc(r.meta.corpus_source)} · ${r.meta.candidates_sent} sent to the model ·
+         generated by ${esc(r.meta.generator)} in ${r.meta.elapsed_ms}ms</p>`;
+
+    out.querySelectorAll('.copy').forEach(b => b.onclick = async () => {
+      await navigator.clipboard.writeText(document.getElementById(b.dataset.t).textContent);
+      b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy', 1400);
+    });
+  }
+  btn.disabled = false; btn.textContent = 'Build my week';
+  out.scrollIntoView({ behavior: 'smooth' });
+});
+</script>

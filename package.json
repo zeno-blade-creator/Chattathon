@@ -11,9 +11,14 @@
     "match": "node scripts/demo-match.mjs",
     "health": "node scripts/health.mjs",
     "adversarial": "node scripts/adversarial.mjs",
-    "test": "node scripts/validate.mjs && node scripts/adversarial.mjs"
+    "test": "node scripts/validate.mjs && node scripts/adversarial.mjs && node scripts/test-pipeline.mjs",
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "test:pipeline": "node scripts/test-pipeline.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.0"
+    "@anthropic-ai/sdk": "^0.127.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "zod": "^4.6.5"
   }
 }

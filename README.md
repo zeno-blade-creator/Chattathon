@@ -149,3 +149,58 @@ checks for disqualifying geography, while `"Boston, MA"` and `"Cambridge, MA 021
 still pass. `checkCity()` returns a `reason` string suitable for showing the user.
 
 There is exactly one city gate, in `lib/profile.mjs`. `lib/corpus.mjs` re-exports it.
+
+---
+
+# The seam — intake to rendered plan
+
+```bash
+npm start          # http://localhost:3000
+npm test           # 31 tests, all offline
+```
+
+One call does everything:
+
+```js
+import { generateGtmPlan } from './lib/pipeline.mjs';
+const result = await generateGtmPlan(intakeForm);
+```
+
+Three possible answers, all of them normal — none of them throw:
+
+| `result.status` | meaning |
+|---|---|
+| `ok` | `result.plan` = `{headline, items[], week_one[]}`, `result.meta` = provenance |
+| `unsupported_city` | outside Greater Boston; render the waitlist with `result.reason` |
+| `invalid` | `result.errors[]` are sentences already written for a human — render as-is |
+
+## HTTP
+
+`POST /api/plan` with the six intake fields; same JSON as above.
+`GET /api/health` reports corpus rows and which generator is live.
+`GET /` is a working intake page — scaffolding, Person C should replace it.
+
+## Why the model cannot hallucinate a Boston event
+
+Not a prompt instruction. A structural one.
+
+**The model never writes a name, URL, date or cost.** It receives candidates and
+returns only corpus `id`s plus prose — reasoning and outreach copy. Every fact on
+the rendered page is joined back from the verified corpus by id. There is no
+field in the output schema where a fake meetup could go.
+
+On top of that, `enforceAllowedIds()` drops any id that wasn't in the shortlist,
+and reports what it dropped in `meta.rejected_ids`. Prompts are not a security
+boundary; this check is.
+
+## Cost
+
+One model call per plan — all ten items, all reasons, all drafts in a single
+response. `claude-opus-5`, adaptive thinking, `effort: medium`, structured output
+via a Zod schema. The shortlist keeps the prompt ~60% smaller than sending the
+whole corpus, and the response carries no repeated facts because the model only
+emits ids and prose.
+
+**Without `ANTHROPIC_API_KEY` set, everything still works** — `generatePlan()`
+falls back to a deterministic stub built from the shortlist. That is how the
+31 tests run offline and for free, and it is the demo's last line of defence.
