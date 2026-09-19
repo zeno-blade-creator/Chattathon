@@ -22,7 +22,6 @@ interface Props {
  */
 export function CopyButton({ value, label = 'Copy', tone = 'solid' }: Props) {
   const [copied, setCopied] = useState(false);
-  const [failed, setFailed] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Without this a press-then-unmount (e.g. regenerating) sets state on a dead component.
@@ -34,18 +33,10 @@ export function CopyButton({ value, label = 'Copy', tone = 'solid' }: Props) {
   );
 
   const onPress = useCallback(async () => {
+    await Clipboard.setStringAsync(value);
+    setCopied(true);
     if (timer.current) clearTimeout(timer.current);
-    try {
-      await Clipboard.setStringAsync(value);
-      setCopied(true);
-      setFailed(false);
-      timer.current = setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Web clipboard writes reject outside a secure context or without
-      // permission. Saying so beats a button that silently does nothing.
-      setFailed(true);
-      timer.current = setTimeout(() => setFailed(false), 3000);
-    }
+    timer.current = setTimeout(() => setCopied(false), 2000);
   }, [value]);
 
   const toneStyle =
@@ -67,7 +58,7 @@ export function CopyButton({ value, label = 'Copy', tone = 'solid' }: Props) {
     >
       <View style={styles.inner}>
         <Text style={[styles.label, toneLabel, copied && styles.labelCopied]}>
-          {copied ? '✓  Copied' : failed ? 'Press and hold to copy' : label}
+          {copied ? '✓  Copied' : label}
         </Text>
       </View>
     </Pressable>
@@ -82,14 +73,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   inner: { flexDirection: 'row', alignItems: 'center' },
-  solid: { backgroundColor: colors.ink, borderColor: colors.ink },
+  solid: { backgroundColor: colors.deepGreen, borderColor: colors.deepGreen },
   quiet: { backgroundColor: 'transparent', borderColor: colors.lineStrong },
-  onDark: { backgroundColor: colors.bg, borderColor: colors.bg },
-  copied: { backgroundColor: colors.done, borderColor: colors.done },
+  /** Amber — this is the Plan view's single accent element. */
+  onDark: { backgroundColor: colors.accent, borderColor: colors.accent },
+  copied: { backgroundColor: colors.midGreen, borderColor: colors.midGreen },
   pressed: { opacity: 0.75 },
   label: { ...type.smallStrong },
-  labelSolid: { color: colors.bg },
+  labelSolid: { color: colors.onDark },
   labelQuiet: { color: colors.inkMuted },
-  labelOnDark: { color: colors.ink },
-  labelCopied: { color: '#FFFFFF' },
+  labelOnDark: { color: colors.deepGreen },
+  labelCopied: { color: colors.onDark },
 });

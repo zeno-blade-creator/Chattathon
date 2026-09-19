@@ -1,52 +1,61 @@
 /**
- * The only network call the app makes.
+ * The only network call this app makes to our own code.
  *
- * It talks to the local generation server, never to Gemini, Tavily or Supabase
- * directly — those need API keys, and anything in this bundle is public.
+ * It talks to the generation server, never to Gemini or Tavily directly —
+ * those need API keys, and everything in this bundle is public. The server
+ * holds the keys; the app sends a profile and gets a finished plan.
  */
 import { SAMPLE_PLAN } from './data/samplePlan';
-import { GOAL_VALUES, STAGE_VALUES, type IntakeProfile, type Plan } from './types';
+import type { IntakeProfile, Plan } from './types';
 
 const BASE = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8787';
 
 /**
- * The GitHub Pages build has no generation server to talk to — Pages is static
- * hosting, and the server exists precisely so the API keys stay off the web.
- * Rather than showing a network error to anyone who opens the public link, that
- * build falls back to a real recorded plan and says so.
+ * The GitHub Pages build is static hosting with no server to reach, so it
+ * defaults to the recorded plan instead of showing a network error.
  */
 const SHOWCASE = process.env.EXPO_PUBLIC_SHOWCASE === '1';
+
+/** 'ai' calls the real model. 'demo' serves the recorded plan instantly. */
+export type Mode = 'ai' | 'demo';
+
+export const DEFAULT_MODE: Mode = SHOWCASE ? 'demo' : 'ai';
 
 export type GenerateResult =
   | { status: 'ready'; plan: Plan; profileId: string | null; fallbackUsed: boolean }
   | { status: 'unsupported_city'; city: string; message: string }
   | { status: 'failed'; error: string };
 
-export async function generatePlan(p: IntakeProfile): Promise<GenerateResult> {
+const recorded = (): GenerateResult =>
+  ({ status: 'ready', plan: SAMPLE_PLAN, profileId: null, fallbackUsed: true });
+
+export async function generatePlan(p: IntakeProfile, mode: Mode = DEFAULT_MODE): Promise<GenerateResult> {
+  // Offline insurance: instant, identical every time, and immune to a dead
+  // network or a rate-limited model thirty seconds before you present.
+  if (mode === 'demo') return recorded();
+
   try {
     const res = await fetch(`${BASE}/generate`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
+      // stage and goal are already slugs ('early-revenue', 'pilot-customers'),
+      // which is exactly what the CHECK constraints accept. No mapping needed.
       body: JSON.stringify({
         building: p.building,
         city: p.city,
         customer: p.customer,
+        stage: p.stage,
+        goal: p.goal,
         tried: p.tried,
-        // Labels are for humans; the CHECK constraints only accept the codes.
-        stage: STAGE_VALUES[p.stage] ?? p.stage,
-        goal: GOAL_VALUES[p.goal] ?? p.goal,
       }),
     });
     const body = await res.json();
     if (!res.ok && body?.status !== 'unsupported_city') {
-      if (SHOWCASE) return { status: 'ready', plan: SAMPLE_PLAN, profileId: null, fallbackUsed: true };
-      return { status: 'failed', error: body?.error ?? `HTTP ${res.status}` };
+      return SHOWCASE ? recorded() : { status: 'failed', error: body?.error ?? `HTTP ${res.status}` };
     }
     return body as GenerateResult;
   } catch (e: any) {
-    if (SHOWCASE) {
-      return { status: 'ready', plan: SAMPLE_PLAN, profileId: null, fallbackUsed: true };
-    }
-    return { status: 'failed', error: e?.message ?? 'network error' };
+    if (SHOWCASE) return recorded();
+    return { status: 'failed', error: e?.message ?? 'Could not reach the generation server on :8787.' };
   }
 }

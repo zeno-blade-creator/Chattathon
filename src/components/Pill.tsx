@@ -11,7 +11,13 @@ interface Props {
 }
 
 /** Small rounded chip used for bucket labels, tags, cost and status. */
-export function Pill({ text, color = colors.inkMuted, background = colors.surfaceSunken, variant = 'tag' }: Props) {
+export function Pill({
+  text,
+  color = colors.inkMuted,
+  // The drab chip surface from the palette, a step darker than the inset panels.
+  background = colors.surfaceMuted,
+  variant = 'tag',
+}: Props) {
   return (
     <View style={[styles.pill, { backgroundColor: background }]}>
       <Text style={[variant === 'label' ? styles.label : styles.tag, { color }]}>{text}</Text>

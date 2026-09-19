@@ -31,7 +31,12 @@ yarn-error.*
 *.pem
 
 # local env files
-.env*.local
+# `.env` itself must be ignored: it holds live Supabase keys. The Expo template
+# only ignored `.env*.local`, which would have committed `.env` straight to the
+# repo.
+.env
+.env.*
+!.env.example
 
 # typescript
 *.tsbuildinfo

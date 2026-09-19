@@ -40,7 +40,9 @@ const styles = StyleSheet.create({
   labelRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   index: {
     ...type.label,
-    color: colors.accent,
+    // Not amber: #E8B04B on the near-white page is ~1.9:1 at this size.
+    // Amber is used as a fill on this view, never as small text.
+    color: colors.midGreen,
     width: 16,
   },
   label: { ...type.heading, color: colors.ink, flex: 1 },

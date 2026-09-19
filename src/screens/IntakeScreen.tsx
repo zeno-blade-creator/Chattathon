@@ -14,7 +14,7 @@ import { Field } from '../components/Field';
 import { checkCity, SUPPORTED_CITY } from '../cityGuard';
 import { SAMPLE_PROFILE } from '../data/samplePlan';
 import { colors, radius, shadow, space, type } from '../theme';
-import { GOAL_OPTIONS, STAGE_OPTIONS, type IntakeProfile } from '../types';
+import { GOAL_OPTIONS, STAGE_OPTIONS, type Goal, type IntakeProfile, type Stage } from '../types';
 
 const EMPTY: IntakeProfile = {
   building: '',
@@ -47,12 +47,12 @@ export function IntakeScreen({ onGenerate }: Props) {
     !profile.customer.trim() ||
     !profile.goal;
 
-  const outOfArea = attempted && !city.empty && !city.covered;
+  const outOfArea = attempted && profile.city.trim() !== '' && !city.supported;
 
   const onSubmit = () => {
     setAttempted(true);
     if (missing) return;
-    if (!checkCity(profile.city).covered) return;
+    if (!checkCity(profile.city).supported) return;
     onGenerate(profile);
   };
 
@@ -100,11 +100,12 @@ export function IntakeScreen({ onGenerate }: Props) {
           placeholder="Boston — Allston & Cambridge"
         />
 
-        {outOfArea ? <OutOfArea city={profile.city.trim()} /> : null}
+        {outOfArea ? <OutOfArea city={profile.city.trim()} reason={city.reason} /> : null}
 
-        <ChoiceGroup
+        <ChoiceGroup<Stage>
           index={3}
           label="Stage"
+          hint="This changes which items rank, so it is worth getting right."
           options={STAGE_OPTIONS}
           value={profile.stage}
           onChange={set('stage')}
@@ -120,7 +121,7 @@ export function IntakeScreen({ onGenerate }: Props) {
           multiline
         />
 
-        <ChoiceGroup
+        <ChoiceGroup<Goal>
           index={5}
           label="Your goal for the next 90 days"
           options={GOAL_OPTIONS}
@@ -164,7 +165,7 @@ export function IntakeScreen({ onGenerate }: Props) {
  * The fail-loudly-and-gracefully state. Naming the city back and refusing to
  * guess is the point — it is what a local judge is testing for.
  */
-function OutOfArea({ city }: { city: string }) {
+function OutOfArea({ city, reason }: { city: string; reason: string | null }) {
   return (
     <View style={styles.outOfArea}>
       <Text style={styles.outOfAreaTitle}>We don't cover {city} yet.</Text>
@@ -173,6 +174,9 @@ function OutOfArea({ city }: { city: string }) {
         only cover {SUPPORTED_CITY} today. We'd rather tell you that than invent a meetup
         that doesn't exist.
       </Text>
+      {/* Person A's gate distinguishes "nowhere near Boston" from "a Boston that
+          isn't in Massachusetts". Showing the reason proves we actually checked. */}
+      {reason ? <Text style={styles.outOfAreaReason}>Why: {reason}.</Text> : null}
       <Pressable style={styles.waitlist} accessibilityRole="button">
         <Text style={styles.waitlistText}>Join the waitlist for {city}</Text>
       </Pressable>
@@ -190,19 +194,26 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
-  eyebrow: { ...type.label, color: colors.accent, marginBottom: space.md },
+  eyebrow: { ...type.label, color: colors.midGreen, marginBottom: space.md },
   display: { ...type.display, color: colors.ink, marginBottom: space.md },
   sub: { ...type.body, color: colors.inkMuted },
   demoLink: { marginTop: space.lg, alignSelf: 'flex-start' },
-  demoLinkText: { ...type.smallStrong, color: colors.accent },
+  demoLinkText: { ...type.smallStrong, color: colors.midGreen },
+  /**
+   * The Intake view's single amber element. A short filled rule rather than
+   * amber text — at 2px of solid colour it carries the accent without the
+   * contrast problem small amber type has on the near-white page.
+   */
   rule: {
-    height: 1,
-    backgroundColor: colors.line,
+    height: 2,
+    width: 48,
+    backgroundColor: colors.accent,
+    borderRadius: radius.pill,
     marginVertical: space.xl,
   },
-  missing: { ...type.small, color: colors.accent, marginBottom: space.md },
+  missing: { ...type.small, color: colors.midGreen, marginBottom: space.md },
   cta: {
-    backgroundColor: colors.ink,
+    backgroundColor: colors.deepGreen,
     borderRadius: radius.md,
     paddingVertical: space.lg,
     alignItems: 'center',
@@ -210,7 +221,7 @@ const styles = StyleSheet.create({
     ...shadow,
   },
   ctaPressed: { opacity: 0.8 },
-  ctaText: { ...type.heading, color: colors.bg },
+  ctaText: { ...type.heading, color: colors.onDark },
   footnote: {
     ...type.small,
     color: colors.inkFaint,
@@ -224,10 +235,16 @@ const styles = StyleSheet.create({
     marginBottom: space.xl,
     marginTop: -space.md,
     borderWidth: 1,
-    borderColor: '#F0D9C6',
+    borderColor: colors.accentLine,
   },
   outOfAreaTitle: { ...type.bodyStrong, color: colors.ink, marginBottom: space.sm },
   outOfAreaBody: { ...type.small, color: colors.inkMuted },
+  outOfAreaReason: {
+    ...type.small,
+    color: colors.deepGreen,
+    marginTop: space.sm,
+    fontWeight: '600',
+  },
   waitlist: {
     marginTop: space.md,
     backgroundColor: colors.accent,
@@ -236,5 +253,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.lg,
     alignSelf: 'flex-start',
   },
-  waitlistText: { ...type.smallStrong, color: '#FFFFFF' },
+  waitlistText: { ...type.smallStrong, color: colors.deepGreen },
 });
