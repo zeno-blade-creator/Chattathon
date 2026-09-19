@@ -1,0 +1,15 @@
+{
+  "name": "hyperlocal-gtm-corpus",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Boston corpus + Supabase seeding for the Hyperlocal GTM Copilot",
+  "scripts": {
+    "verify": "node scripts/verify-urls.mjs",
+    "seed": "node scripts/seed.mjs",
+    "validate": "node scripts/validate.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}
