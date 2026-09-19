@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 
 import { SUPPORTED_CITY } from '../cityGuard';
+import { CORPUS_SIZE } from '../data/samplePlan';
 import { colors, radius, space, type } from '../theme';
 
 /**
@@ -11,7 +12,7 @@ import { colors, radius, space, type } from '../theme';
  */
 const STEPS = [
   `Reading your profile against the ${SUPPORTED_CITY} corpus`,
-  'Ranking 50 verified local opportunities',
+  `Ranking ${CORPUS_SIZE} verified local opportunities`,
   'Picking the ten that fit your stage and goal',
   'Writing your pitch for each one',
   'Laying out your week',
