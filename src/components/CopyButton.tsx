@@ -8,8 +8,12 @@ interface Props {
   /** The exact text placed on the clipboard. */
   value: string;
   label?: string;
-  /** `solid` for the primary draft copy, `quiet` for inline secondary copies. */
-  tone?: 'solid' | 'quiet';
+  /**
+   * `solid` for the primary draft copy, `quiet` for inline secondary copies,
+   * `onDark` for use inside the dark Week One card — a solid button there is
+   * ink-on-ink and effectively invisible.
+   */
+  tone?: 'solid' | 'quiet' | 'onDark';
 }
 
 /**
@@ -35,7 +39,10 @@ export function CopyButton({ value, label = 'Copy', tone = 'solid' }: Props) {
     timer.current = setTimeout(() => setCopied(false), 2000);
   }, [value]);
 
-  const solid = tone === 'solid';
+  const toneStyle =
+    tone === 'solid' ? styles.solid : tone === 'onDark' ? styles.onDark : styles.quiet;
+  const toneLabel =
+    tone === 'solid' ? styles.labelSolid : tone === 'onDark' ? styles.labelOnDark : styles.labelQuiet;
 
   return (
     <Pressable
@@ -44,19 +51,13 @@ export function CopyButton({ value, label = 'Copy', tone = 'solid' }: Props) {
       accessibilityLabel={`${label} to clipboard`}
       style={({ pressed }) => [
         styles.base,
-        solid ? styles.solid : styles.quiet,
+        toneStyle,
         copied && styles.copied,
         pressed && styles.pressed,
       ]}
     >
       <View style={styles.inner}>
-        <Text
-          style={[
-            styles.label,
-            solid ? styles.labelSolid : styles.labelQuiet,
-            copied && styles.labelCopied,
-          ]}
-        >
+        <Text style={[styles.label, toneLabel, copied && styles.labelCopied]}>
           {copied ? '✓  Copied' : label}
         </Text>
       </View>
@@ -74,10 +75,12 @@ const styles = StyleSheet.create({
   inner: { flexDirection: 'row', alignItems: 'center' },
   solid: { backgroundColor: colors.ink, borderColor: colors.ink },
   quiet: { backgroundColor: 'transparent', borderColor: colors.lineStrong },
+  onDark: { backgroundColor: colors.bg, borderColor: colors.bg },
   copied: { backgroundColor: colors.done, borderColor: colors.done },
   pressed: { opacity: 0.75 },
   label: { ...type.smallStrong },
   labelSolid: { color: colors.bg },
   labelQuiet: { color: colors.inkMuted },
+  labelOnDark: { color: colors.ink },
   labelCopied: { color: '#FFFFFF' },
 });

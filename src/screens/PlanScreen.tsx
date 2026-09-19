@@ -88,7 +88,7 @@ function WeekOne({ plan }: { plan: Plan }) {
           <Text style={styles.weekLabel}>Week one</Text>
           <Text style={styles.weekTitle}>Five things, {plan.week_one.total_time} total</Text>
         </View>
-        <CopyButton value={weekOneToText(plan)} label="Copy plan" />
+        <CopyButton value={weekOneToText(plan)} label="Copy plan" tone="onDark" />
       </View>
 
       {plan.week_one.actions.map((a, i) => (
