@@ -19,8 +19,9 @@
     "match": "node scripts/demo-match.mjs",
     "health": "node --env-file=.env scripts/health.mjs",
     "adversarial": "node scripts/adversarial.mjs",
-    "test": "node scripts/validate.mjs && node scripts/adversarial.mjs && node scripts/test-city-guard.mjs",
-    "test:city": "node scripts/test-city-guard.mjs"
+    "test": "node scripts/validate.mjs && node scripts/adversarial.mjs && node scripts/test-city-guard.mjs && node scripts/test-generate.mjs",
+    "test:city": "node scripts/test-city-guard.mjs",
+    "test:generate": "node scripts/test-generate.mjs"
   },
   "dependencies": {
     "@expo/metro-runtime": "~57.0.16",
