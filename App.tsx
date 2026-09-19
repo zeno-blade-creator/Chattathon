@@ -1,107 +1,69 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import { buildProfile } from './lib/profile.mjs';
 import { DEFAULT_MODE, generatePlan, type GenerateResult, type Mode } from './src/api';
-import { saveProfile } from './src/lib/corpus';
 import { IntakeScreen } from './src/screens/IntakeScreen';
 import { LoadingScreen } from './src/screens/LoadingScreen';
 import { PlanScreen } from './src/screens/PlanScreen';
 import { colors, radius, space, type } from './src/theme';
 import type { IntakeProfile, Plan } from './src/types';
 
-type Route = 'intake' | 'loading' | 'plan' | 'blocked';
+type View_ = 'intake' | 'loading' | 'plan' | 'blocked';
 
 export default function App() {
-  const [route, setRoute] = useState<Route>('intake');
+  const [view, setView] = useState<View_>('intake');
   const [plan, setPlan] = useState<Plan | null>(null);
+  const [notice, setNotice] = useState<string>('');
+  const [fallbackUsed, setFallbackUsed] = useState(false);
   /**
-   * The founder_profiles row id. Needed to write item_status, and it only
-   * exists client-side — RLS grants the anon key INSERT but not SELECT, so it
-   * can never be read back.
-   */
-  const profileId = useRef<string | null>(null);
-
-  /**
-   * 'ai' runs the real generation. 'demo' serves the recorded plan instantly —
-   * the switch exists so a dead network on stage costs a tap, not the pitch.
+   * 'ai' runs the real generation server. 'demo' serves the recorded plan
+   * instantly and offline — a dead network on stage should cost a tap, not
+   * the pitch. The GitHub Pages build defaults to 'demo' because static
+   * hosting has no server to reach.
    */
   const [mode, setMode] = useState<Mode>(DEFAULT_MODE);
-  const [notice, setNotice] = useState('');
 
-  // Generation takes ~20-30s and the loading animation is shorter, so we hold
-  // the result until both are done: never cut the plan off, never snap early.
+  // Generation takes ~20-25s; the loading animation is shorter. We hold the
+  // result until the animation has also finished so the transition never
+  // snaps mid-sentence, and never cuts the plan off early either.
   const result = useRef<GenerateResult | null>(null);
   const [animDone, setAnimDone] = useState(false);
   const [settled, setSettled] = useState(false);
 
-  const onGenerate = useCallback((raw: IntakeProfile) => {
+  const onGenerate = (p: IntakeProfile) => {
     result.current = null;
     setAnimDone(false);
     setSettled(false);
-    setRoute('loading');
-
-    // The real call. The server does the model work and holds every API key.
-    generatePlan(raw, mode).then((r) => { result.current = r; setSettled(true); });
-
-    // Person A's buildProfile does the validation, normalisation and signal
-    // derivation. Persisting is fire-and-forget on purpose: a Supabase outage
-    // must not stop the plan rendering.
-    try {
-      const built = buildProfile({
-        building: raw.building,
-        city: raw.city,
-        stage: raw.stage as Exclude<IntakeProfile['stage'], ''>,
-        customer: raw.customer,
-        goal: raw.goal as Exclude<IntakeProfile['goal'], ''>,
-        already_tried: raw.tried || null,
-      });
-      saveProfile(built)
-        .then(({ id }) => {
-          profileId.current = id;
-        })
-        .catch(() => {
-          /* degraded, not fatal */
-        });
-    } catch (err) {
-      // The intake screen already blocks invalid submissions; this is the
-      // belt-and-braces path if the two validators ever disagree.
-      console.warn('[app] profile rejected by buildProfile', err);
-    }
-  }, [mode]);
+    setView('loading');
+    generatePlan(p, mode).then((r) => { result.current = r; setSettled(true); });
+  };
 
   useEffect(() => {
     if (!settled || !animDone) return;
     const r = result.current;
     if (!r) return;
     if (r.status === 'ready') {
-      setPlan(r.plan);
-      if (r.profileId) profileId.current = r.profileId;
-      setRoute('plan');
-      return;
+      setPlan(r.plan); setFallbackUsed(r.fallbackUsed); setView('plan'); return;
     }
-    setNotice(r.status === 'unsupported_city'
-      ? r.message
-      : `${r.error} Start the server with \`npm run server\`, or switch to Demo.`);
-    setRoute('blocked');
+    setNotice(
+      r.status === 'unsupported_city'
+        ? r.message
+        : `Generation failed: ${r.error}. Check the server is running on :8787.`,
+    );
+    setView('blocked');
   }, [settled, animDone]);
 
-  const onRestart = useCallback(() => {
-    setPlan(null);
-    setNotice('');
-    result.current = null;
-    profileId.current = null;
-    setAnimDone(false);
-    setSettled(false);
-    setRoute('intake');
-  }, []);
+  const onRestart = () => {
+    setPlan(null); setNotice(''); setFallbackUsed(false); result.current = null;
+    setAnimDone(false); setSettled(false); setView('intake');
+  };
 
   // The home screen's hero runs to the top of the display, so the inset above
   // it is painted deep green and the status bar icons flip to light. Every
-  // other route is a light page.
-  const onHero = route === 'intake';
+  // other view is a light page.
+  const onHero = view === 'intake';
 
   return (
     <SafeAreaProvider>
@@ -110,13 +72,17 @@ export default function App() {
         edges={['top', 'left', 'right']}
       >
         <View style={styles.root}>
-          {route === 'intake' ? (
+          {view === 'intake' ? (
             <>
-              <View style={styles.modeBar}>
+              <View style={styles.modeBar} pointerEvents="box-none">
                 {(['ai', 'demo'] as const).map((m) => (
-                  <Pressable key={m} onPress={() => setMode(m)} accessibilityRole="radio"
+                  <Pressable
+                    key={m}
+                    onPress={() => setMode(m)}
+                    accessibilityRole="radio"
                     accessibilityState={{ selected: mode === m }}
-                    style={[styles.modeChip, mode === m && styles.modeChipOn]}>
+                    style={[styles.modeChip, mode === m && styles.modeChipOn]}
+                  >
                     <Text style={[styles.modeText, mode === m && styles.modeTextOn]}>
                       {m === 'ai' ? 'Live AI' : 'Demo (offline)'}
                     </Text>
@@ -126,11 +92,9 @@ export default function App() {
               <IntakeScreen onGenerate={onGenerate} />
             </>
           ) : null}
-          {route === 'loading' ? <LoadingScreen onDone={() => setAnimDone(true)} /> : null}
-          {route === 'plan' && plan ? (
-            <PlanScreen plan={plan} profileId={profileId} onRestart={onRestart} />
-          ) : null}
-          {route === 'blocked' ? (
+          {view === 'loading' ? <LoadingScreen onDone={() => setAnimDone(true)} /> : null}
+          {view === 'plan' && plan ? <PlanScreen plan={plan} onRestart={onRestart} fallbackUsed={fallbackUsed} /> : null}
+          {view === 'blocked' ? (
             <View style={styles.blocked}>
               <Text style={styles.blockedTitle}>We cover Boston today</Text>
               <Text style={styles.blockedBody}>{notice}</Text>
@@ -150,13 +114,18 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   safeHero: { backgroundColor: colors.deepGreen },
   root: { flex: 1, backgroundColor: colors.bg },
-  modeBar: { flexDirection: 'row', gap: 6, paddingHorizontal: space.lg,
-             paddingTop: space.sm, justifyContent: 'flex-end' },
-  modeChip: { paddingVertical: 4, paddingHorizontal: space.sm,
-              borderRadius: radius.pill, borderWidth: 1, borderColor: colors.line },
-  modeChipOn: { backgroundColor: colors.ink, borderColor: colors.ink },
-  modeText: { ...type.small, color: colors.inkMuted },
-  modeTextOn: { color: colors.bg, fontWeight: '600' },
+  modeBar: {
+    position: 'absolute', top: space.sm, right: space.lg, zIndex: 10,
+    flexDirection: 'row', gap: 6,
+  },
+  modeChip: {
+    paddingVertical: 4, paddingHorizontal: space.sm,
+    borderRadius: radius.pill, borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.45)',
+  },
+  modeChipOn: { backgroundColor: '#FFFFFF', borderColor: '#FFFFFF' },
+  modeText: { ...type.small, color: 'rgba(255,255,255,0.85)' },
+  modeTextOn: { color: colors.deepGreen, fontWeight: '700' },
   blocked: { flex: 1, justifyContent: 'center', padding: space.lg, gap: space.md },
   blockedTitle: { ...type.title, color: colors.ink },
   blockedBody: { ...type.body, color: colors.inkMuted },

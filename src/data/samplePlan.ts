@@ -22,9 +22,9 @@ export const SUPPORTED_CITY = 'Boston';
 export const SAMPLE_PROFILE: IntakeProfile = {
   building: 'Cinch — an app that finds you a pickup basketball or soccer game happening near you in the next two hours.',
   city: 'Boston — Allston & Cambridge',
-  stage: 'launched',
+  stage: 'Launched, few users',
   customer: 'People 22–35 who recently moved to the city and want to play sport without joining a league.',
-  goal: 'users',
+  goal: 'Users',
   tried: 'Posted twice on Instagram, put flyers up in two gyms. Got about 40 signups, most went cold.',
 };
 
