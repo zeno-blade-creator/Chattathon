@@ -92,11 +92,6 @@ export function LoadingScreen({ onDone }: Props) {
             );
           })}
         </View>
-
-        <Text style={styles.note}>
-          The {SUPPORTED_CITY} corpus is already on disk — nothing is being searched live,
-          so this costs pennies and can't fail on stage.
-        </Text>
       </View>
     </View>
   );
@@ -128,12 +123,4 @@ const styles = StyleSheet.create({
   stepText: { ...type.body, color: colors.inkMuted, flex: 1 },
   stepPending: { color: colors.inkFaint },
   stepActive: { color: colors.ink, fontWeight: '600' },
-  note: {
-    ...type.small,
-    color: colors.inkFaint,
-    marginTop: space.xxl,
-    paddingTop: space.lg,
-    borderTopWidth: 1,
-    borderTopColor: colors.line,
-  },
 });
