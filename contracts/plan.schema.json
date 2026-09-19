@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Plan",
+  "type": "object",
+  "required": ["plan_id","city","stage","generated_at","coverage","headline","items","week_one"],
+  "properties": {
+    "plan_id":      {"type":"string"},
+    "profile_id":   {"type":["string","null"]},
+    "city":         {"type":"string"},
+    "stage":        {"enum":["idea","building","launched","revenue","raising"]},
+    "generated_at": {"type":"string","format":"date-time"},
+    "headline":     {"type":"string","description":"One line Person C puts at the top of the page."},
+    "coverage": {
+      "type":"object","required":["city_supported","note"],
+      "properties":{
+        "city_supported":{"type":"boolean"},
+        "note":{"type":"string","description":"If false, C renders the honest waitlist state instead of a plan."}
+      }
+    },
+    "items": {
+      "type":"array","minItems":1,"maxItems":12,
+      "items":{
+        "type":"object",
+        "required":["id","type","name","url","why_you_why_now","contact_route","verified"],
+        "properties":{
+          "id":   {"type":"string","description":"Stable. Used by item_status for the checklist."},
+          "type": {"enum":["event","person_org","channel"]},
+          "name": {"type":"string"},
+          "url":  {"type":"string","format":"uri","description":"REAL and fetchable. Never generated."},
+          "source_url":{"type":"string","description":"Where we found it. Provenance for the no-hallucination claim."},
+          "date_or_cadence":{"type":["string","null"],"description":"ISO date for events, e.g. 'weekly Thu 6pm' otherwise."},
+          "location":{
+            "type":["object","null"],
+            "properties":{"name":{"type":"string"},"address":{"type":"string"},
+                          "lat":{"type":["number","null"]},"lng":{"type":["number","null"]}},
+            "description":"Drives the map pin. Null for online-only channels."
+          },
+          "who_it_serves":  {"type":"string"},
+          "why_you_why_now":{"type":"string","description":"THE product. Ties this item to THIS founder's product+stage+goal."},
+          "cost":           {"type":"string"},
+          "contact_route":  {"type":"string","description":"Public org contact only. No scraped personal emails."},
+          "pitch": {
+            "type":"object",
+            "properties":{
+              "channel":{"enum":["email","dm","in_person"]},
+              "subject":{"type":["string","null"]},
+              "body":{"type":"string","description":"<=80 words, sendable as written. Copy button target."}
+            }
+          },
+          "tags":      {"type":"array","items":{"type":"string"}},
+          "confidence":{"type":"number","minimum":0,"maximum":1},
+          "verified":  {"type":"boolean","description":"true only if url returned 2xx at generation time. C may badge this."}
+        }
+      }
+    },
+    "week_one": {
+      "type":"array","maxItems":6,
+      "items":{
+        "type":"object","required":["day","minutes","action"],
+        "properties":{
+          "day":{"type":"string"},"minutes":{"type":"integer"},
+          "action":{"type":"string"},
+          "item_ids":{"type":"array","items":{"type":"string"}}
+        }
+      }
+    },
+    "total_minutes":{"type":"integer"}
+  }
+}
