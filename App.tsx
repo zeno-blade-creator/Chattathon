@@ -66,9 +66,17 @@ export default function App() {
     setRoute('intake');
   }, []);
 
+  // The home screen's hero runs to the top of the display, so the inset above
+  // it is painted deep green and the status bar icons flip to light. Every
+  // other route is a light page.
+  const onHero = route === 'intake';
+
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
+      <SafeAreaView
+        style={[styles.safe, onHero && styles.safeHero]}
+        edges={['top', 'left', 'right']}
+      >
         <View style={styles.root}>
           {route === 'intake' ? <IntakeScreen onGenerate={onGenerate} /> : null}
           {route === 'loading' ? <LoadingScreen onDone={onLoaded} /> : null}
@@ -76,7 +84,7 @@ export default function App() {
             <PlanScreen plan={plan} profileId={profileId} onRestart={onRestart} />
           ) : null}
         </View>
-        <StatusBar style="dark" />
+        <StatusBar style={onHero ? 'light' : 'dark'} />
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -84,5 +92,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
+  safeHero: { backgroundColor: colors.deepGreen },
   root: { flex: 1, backgroundColor: colors.bg },
 });
