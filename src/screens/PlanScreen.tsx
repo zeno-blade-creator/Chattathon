@@ -10,9 +10,15 @@ import { BUCKETS, type ItemStatus, type Plan } from '../types';
 interface Props {
   plan: Plan;
   onRestart: () => void;
+  /**
+   * True when live generation failed and this is the recorded example plan.
+   * It was built for a different founder, so we say so rather than passing it
+   * off as theirs — the same honesty the unsupported-city screen shows.
+   */
+  fallbackUsed?: boolean;
 }
 
-export function PlanScreen({ plan, onRestart }: Props) {
+export function PlanScreen({ plan, onRestart, fallbackUsed = false }: Props) {
   // MVP+: per-item progress. Kept in the screen for now; this is the state a
   // future generation would read to avoid repeating what's already been done.
   const [statuses, setStatuses] = useState<Record<string, ItemStatus>>({});
@@ -32,6 +38,17 @@ export function PlanScreen({ plan, onRestart }: Props) {
 
   return (
     <ScrollView style={styles.flex} contentContainerStyle={styles.content}>
+      {fallbackUsed ? (
+        <View style={styles.fallbackNote}>
+          <Text style={styles.fallbackTitle}>Example plan</Text>
+          <Text style={styles.fallbackBody}>
+            We couldn't reach the live generator, so this is a real plan we
+            generated earlier — for a different founder. The opportunities and
+            links are genuine; the reasoning is not about your product.
+          </Text>
+        </View>
+      ) : null}
+
       <View style={styles.headerRow}>
         <Text style={styles.eyebrow}>
           {plan.city} · {plan.generatedAt}
@@ -113,6 +130,23 @@ function WeekOne({ plan }: { plan: Plan }) {
 }
 
 const styles = StyleSheet.create({
+  fallbackNote: {
+    backgroundColor: colors.accentSoft,
+    borderColor: colors.accent,
+    borderWidth: 1,
+    borderRadius: radius.md,
+    padding: space.md,
+    marginBottom: space.md,
+  },
+  fallbackTitle: {
+    ...type.label,
+    color: colors.accent,
+    marginBottom: space.xs,
+  },
+  fallbackBody: {
+    ...type.body,
+    color: colors.ink,
+  },
   flex: { flex: 1 },
   content: {
     padding: space.xl,
