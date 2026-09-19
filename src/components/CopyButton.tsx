@@ -22,6 +22,7 @@ interface Props {
  */
 export function CopyButton({ value, label = 'Copy', tone = 'solid' }: Props) {
   const [copied, setCopied] = useState(false);
+  const [failed, setFailed] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Without this a press-then-unmount (e.g. regenerating) sets state on a dead component.
@@ -33,10 +34,18 @@ export function CopyButton({ value, label = 'Copy', tone = 'solid' }: Props) {
   );
 
   const onPress = useCallback(async () => {
-    await Clipboard.setStringAsync(value);
-    setCopied(true);
     if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => setCopied(false), 2000);
+    try {
+      await Clipboard.setStringAsync(value);
+      setCopied(true);
+      setFailed(false);
+      timer.current = setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Web clipboard writes reject outside a secure context or without
+      // permission. Saying so beats a button that silently does nothing.
+      setFailed(true);
+      timer.current = setTimeout(() => setFailed(false), 3000);
+    }
   }, [value]);
 
   const toneStyle =
@@ -58,7 +67,7 @@ export function CopyButton({ value, label = 'Copy', tone = 'solid' }: Props) {
     >
       <View style={styles.inner}>
         <Text style={[styles.label, toneLabel, copied && styles.labelCopied]}>
-          {copied ? '✓  Copied' : label}
+          {copied ? '✓  Copied' : failed ? 'Press and hold to copy' : label}
         </Text>
       </View>
     </Pressable>
