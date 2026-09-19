@@ -119,13 +119,18 @@ export const STAGE_VALUES: Record<string, string> = {
   'Raising': 'raising',
 };
 
+/**
+ * Must stay a subset of GOALS in lib/profile.mjs, which is itself pinned to the
+ * CHECK constraint on founder_profiles.goal. 'Cofounders' and 'Mentors' were
+ * offered here but accepted by neither, so picking them threw inside
+ * buildProfile and generatePlanSafe quietly served the canned fallback plan.
+ * scripts/test-intake-contract.mjs enforces the subset.
+ */
 export const GOAL_OPTIONS = [
   'Users',
   'Pilot customers',
   'Funding',
   'Press',
-  'Cofounders',
-  'Mentors',
 ] as const;
 
 export const GOAL_VALUES: Record<string, string> = {
@@ -133,8 +138,6 @@ export const GOAL_VALUES: Record<string, string> = {
   'Pilot customers': 'pilot-customers',
   'Funding': 'funding',
   'Press': 'press',
-  'Cofounders': 'cofounders',
-  'Mentors': 'mentors',
 };
 
 /** MVP+ — per-item progress so a second generation can avoid repeats. */
