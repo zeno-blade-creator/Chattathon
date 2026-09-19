@@ -1,0 +1,1199 @@
+[
+  {
+    "id": "evt-venture-cafe-thursday",
+    "type": "event",
+    "name": "Venture Café Cambridge — Thursday Gathering",
+    "url": "https://venturecafecambridge.org/",
+    "date_or_cadence": "Weekly, every Thursday 3:00–8:00pm, CIC Cambridge (1 Broadway)",
+    "who_it_serves": "Every stage of founder in Greater Boston, plus operators, students and investors who drop in casually",
+    "tags": [
+      "networking",
+      "weekly",
+      "free",
+      "cambridge",
+      "all-stages",
+      "high-volume"
+    ],
+    "why_it_matters": "The single highest-density founder room in Boston and it runs every week, so a miss costs seven days not a year. No ticket, no pitch, walk in and talk to 20 people.",
+    "cost": "Free",
+    "contact_route": "Register free on the site; no application",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-masschallenge-boston",
+    "type": "event",
+    "name": "MassChallenge Boston Accelerator",
+    "url": "https://masschallenge.org/",
+    "date_or_cadence": "Annual cohort, applications typically open late winter for a summer start",
+    "who_it_serves": "Early-stage startups across all industries; zero-equity, so pre-seed and bootstrapped founders qualify",
+    "tags": [
+      "accelerator",
+      "annual",
+      "equity-free",
+      "boston",
+      "pre-seed",
+      "deadline"
+    ],
+    "why_it_matters": "Takes no equity, which means it costs a bootstrapped founder nothing but time, and the alumni network is the closest thing Boston has to a default credential.",
+    "cost": "Free to apply, equity-free",
+    "contact_route": "Application form on masschallenge.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-boston-new-tech",
+    "type": "event",
+    "name": "Boston New Technology (BNT) Product Showcase",
+    "url": "https://www.meetup.com/bostonnewtechnology/",
+    "date_or_cadence": "Monthly showcase; startups present 5-minute product demos",
+    "who_it_serves": "Startups with a working product wanting an audience of local tech people and early adopters",
+    "tags": [
+      "demo",
+      "monthly",
+      "product-launch",
+      "boston",
+      "free",
+      "speaking-slot"
+    ],
+    "why_it_matters": "One of the few Boston events that gives an unknown founder an actual stage slot rather than a badge. Their own domain is defunct — the Meetup group is the live front door.",
+    "cost": "Free to attend; free to apply to present",
+    "contact_route": "Message the organisers via the Meetup group; presenter applications announced per event",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-startup-boston-week",
+    "type": "event",
+    "name": "Startup Boston Week",
+    "url": "https://www.startupbos.org/",
+    "date_or_cadence": "Annual, typically September; smaller community events run year-round",
+    "who_it_serves": "Founders and early employees at Boston startups; heavily operator-focused rather than investor-focused",
+    "tags": [
+      "conference",
+      "annual",
+      "boston",
+      "community",
+      "free",
+      "operators"
+    ],
+    "why_it_matters": "Free and community-run, which means the attendees are people actually building rather than people selling to builders. Volunteer or speak to get visibility beyond a name badge.",
+    "cost": "Free",
+    "contact_route": "Speaker and volunteer forms on startupbos.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-greentown-labs-events",
+    "type": "event",
+    "name": "Greentown Labs Events & Tours",
+    "url": "https://greentownlabs.com/events/",
+    "date_or_cadence": "Rolling calendar; public tours and demo events most months",
+    "who_it_serves": "Climate, energy and hardware founders in Somerville/Greater Boston",
+    "tags": [
+      "climate",
+      "hardware",
+      "somerville",
+      "incubator",
+      "tours",
+      "niche"
+    ],
+    "why_it_matters": "If your product touches climate or energy, this is the only room in Boston where every single person in it is in your category. If it doesn't, skip it — that focus cuts both ways.",
+    "cost": "Mostly free; some events ticketed",
+    "contact_route": "Event registration on greentownlabs.com/events",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-harvard-ilab-events",
+    "type": "event",
+    "name": "Harvard Innovation Labs — Public Events",
+    "url": "https://innovationlabs.harvard.edu/events/",
+    "date_or_cadence": "Weekly public programming during the academic year",
+    "who_it_serves": "Founders at any stage; many sessions are open to non-Harvard people",
+    "tags": [
+      "workshop",
+      "weekly",
+      "allston",
+      "free",
+      "mentorship",
+      "students"
+    ],
+    "why_it_matters": "A meaningful share of the calendar is open to the public and free, so you can get office-hours-grade advice without an affiliation. Also the best place in Boston to meet technical co-founders and interns.",
+    "cost": "Free for public sessions",
+    "contact_route": "Public event RSVP on the i-lab events page",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-mit-trust-center",
+    "type": "event",
+    "name": "MIT Martin Trust Center for Entrepreneurship — Events",
+    "url": "https://entrepreneurship.mit.edu/events/",
+    "date_or_cadence": "Ongoing during term; mix of public talks and MIT-only programming",
+    "who_it_serves": "Technical and consumer founders; public sessions welcome non-MIT attendees",
+    "tags": [
+      "mit",
+      "cambridge",
+      "workshop",
+      "free",
+      "technical",
+      "students"
+    ],
+    "why_it_matters": "Filter the calendar for the public sessions and you get frameworks plus a room of MIT builders — a realistic pipeline for a non-technical founder looking for a technical partner.",
+    "cost": "Free for public events",
+    "contact_route": "Event listings and RSVP on entrepreneurship.mit.edu/events",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-mit-100k",
+    "type": "event",
+    "name": "MIT $100K Entrepreneurship Competition",
+    "url": "https://www.mit100k.org/",
+    "date_or_cadence": "Annual, three stages running across the academic year (Pitch, Accelerate, Launch)",
+    "who_it_serves": "Early-stage startups; entry rules require at least one MIT-affiliated team member for some tracks — check before investing time",
+    "tags": [
+      "competition",
+      "annual",
+      "mit",
+      "funding",
+      "non-dilutive",
+      "deadline"
+    ],
+    "why_it_matters": "Non-dilutive prize money plus a public showcase. Read the eligibility rules first — this is the one on the list most likely not to apply to you.",
+    "cost": "Free to enter",
+    "contact_route": "Entry details on mit100k.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-district-hall",
+    "type": "event",
+    "name": "District Hall Boston — Public Innovation Space Events",
+    "url": "https://districthallboston.org/",
+    "date_or_cadence": "Rolling event calendar; free co-working during open hours",
+    "who_it_serves": "Boston founders and community organisers, Seaport-based",
+    "tags": [
+      "seaport",
+      "coworking",
+      "free",
+      "community",
+      "venue",
+      "events"
+    ],
+    "why_it_matters": "Free public workspace and a calendar of community events — and you can host your own meetup there, which turns you from attendee into convener.",
+    "cost": "Free to use; event costs vary",
+    "contact_route": "Event calendar and space enquiry form on the site",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-cic-events",
+    "type": "event",
+    "name": "CIC Boston & Cambridge — Community Events",
+    "url": "https://cic.com/events",
+    "date_or_cadence": "Rolling; multiple events weekly across CIC Boston and CIC Cambridge",
+    "who_it_serves": "Startups of all stages in the CIC buildings and the wider public",
+    "tags": [
+      "coworking",
+      "weekly",
+      "cambridge",
+      "boston",
+      "networking",
+      "venue"
+    ],
+    "why_it_matters": "CIC is the physical building most Boston startups pass through, so its calendar is a proxy for the whole ecosystem's calendar. Sort by free and public.",
+    "cost": "Varies; many free",
+    "contact_route": "Event calendar at cic.com/events",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-mass-innovation-nights",
+    "type": "event",
+    "name": "Mass Innovation Nights",
+    "url": "https://mass.innovationnights.com/",
+    "date_or_cadence": "Monthly product-launch night; companies apply to launch",
+    "who_it_serves": "Massachusetts companies with a new product to launch publicly",
+    "tags": [
+      "product-launch",
+      "monthly",
+      "massachusetts",
+      "free",
+      "press",
+      "speaking-slot"
+    ],
+    "why_it_matters": "Built specifically around launching a product, and it comes with social amplification and local press attention rather than just a room. Apply to be one of the launching companies.",
+    "cost": "Free",
+    "contact_route": "Company submission form on the site",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-underscore-vc-events",
+    "type": "event",
+    "name": "Underscore VC — Community Events & Core Community",
+    "url": "https://underscore.vc/",
+    "date_or_cadence": "Rolling programming for Boston founders, including open community events",
+    "who_it_serves": "Seed-stage and pre-seed Boston founders, tech-forward",
+    "tags": [
+      "vc",
+      "boston",
+      "community",
+      "networking",
+      "seed",
+      "warm-intro"
+    ],
+    "why_it_matters": "A Boston-native seed fund that runs genuine community programming rather than pure deal-flow theatre — a low-stakes way to get on an investor's radar months before you raise.",
+    "cost": "Free",
+    "contact_route": "Community and contact forms on underscore.vc",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-babson-win-lab",
+    "type": "event",
+    "name": "Babson WIN Lab — Women Innovating Now",
+    "url": "https://www.babson.edu/cwel/",
+    "date_or_cadence": "Annual accelerator cohort, applications open ahead of the academic year",
+    "who_it_serves": "Women founders at early stage, Boston area; no Babson affiliation required for some tracks",
+    "tags": [
+      "accelerator",
+      "women-founders",
+      "annual",
+      "boston",
+      "deadline",
+      "mentorship"
+    ],
+    "why_it_matters": "Babson is the strongest entrepreneurship brand in the region and the WIN Lab is its most accessible front door for a non-student woman founder.",
+    "cost": "Free to apply",
+    "contact_route": "Programme page application form",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-eforall-boston",
+    "type": "event",
+    "name": "EforAll (Entrepreneurship for All) — Boston-area Accelerator",
+    "url": "https://eforall.org/",
+    "date_or_cadence": "Twice-yearly cohorts across Massachusetts chapters; free pitch contests in between",
+    "who_it_serves": "Under-represented and first-time founders, including non-technical and small-business founders",
+    "tags": [
+      "accelerator",
+      "free",
+      "massachusetts",
+      "underrepresented",
+      "mentorship",
+      "non-dilutive"
+    ],
+    "why_it_matters": "Completely free, takes no equity, and explicitly built for founders without a network — which is precisely the gap a solo non-technical founder is trying to close.",
+    "cost": "Free, equity-free",
+    "contact_route": "Chapter application forms on eforall.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "evt-general-assembly-boston",
+    "type": "event",
+    "name": "General Assembly Boston — Free Workshops & Events",
+    "url": "https://generalassemb.ly/",
+    "date_or_cadence": "Weekly free workshops and panels, many virtual, some Boston-local",
+    "who_it_serves": "Non-technical founders and career-changers wanting practical marketing, product and data skills",
+    "tags": [
+      "workshop",
+      "weekly",
+      "free",
+      "marketing-skills",
+      "non-technical",
+      "beginner"
+    ],
+    "why_it_matters": "Free short workshops on exactly the skills a solo founder is missing, and the attendees are early-career people who make good first hires and beta testers.",
+    "cost": "Free for most workshops",
+    "contact_route": "Event listings on generalassemb.ly",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-masschallenge",
+    "type": "person_org",
+    "name": "MassChallenge (org)",
+    "url": "https://masschallenge.org/contact/",
+    "date_or_cadence": "Year-round; cohort applications annual",
+    "who_it_serves": "Early-stage startups in any sector, worldwide but Boston-headquartered",
+    "tags": [
+      "accelerator",
+      "equity-free",
+      "boston",
+      "intro-path",
+      "mentors"
+    ],
+    "why_it_matters": "Beyond the cohort, the staff run mentor matching and community events — a polite note explaining your stage often gets you pointed at the right programme or mentor even outside cohort season.",
+    "cost": "Free",
+    "contact_route": "Public contact form on masschallenge.org/contact",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-techstars-boston",
+    "type": "person_org",
+    "name": "Techstars Boston",
+    "url": "https://www.techstars.com/accelerators",
+    "date_or_cadence": "Annual cohort; applications open on a published cycle",
+    "who_it_serves": "Pre-seed and seed startups ready to take investment for equity",
+    "tags": [
+      "accelerator",
+      "equity",
+      "boston",
+      "funding",
+      "deadline",
+      "network"
+    ],
+    "why_it_matters": "The strongest branded accelerator with a Boston presence. Worth applying early even if you're not ready — the application itself forces the clarity, and managing directors remember repeat applicants.",
+    "cost": "Free to apply; takes equity if accepted",
+    "contact_route": "Accelerator directory and application on techstars.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-the-engine-mit",
+    "type": "person_org",
+    "name": "The Engine (MIT-founded tough-tech venture firm)",
+    "url": "https://engine.xyz/",
+    "date_or_cadence": "Year-round; rolling enquiries",
+    "who_it_serves": "Deep-tech and hardware founders with long R&D timelines",
+    "tags": [
+      "vc",
+      "deep-tech",
+      "cambridge",
+      "hardware",
+      "lab-space",
+      "niche"
+    ],
+    "why_it_matters": "Only relevant if you're building something physical or scientific — but if you are, this is the one Boston institution built specifically for you, with lab space as well as capital.",
+    "cost": "Free to contact",
+    "contact_route": "Contact form on engine.xyz",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-northeastern-idea",
+    "type": "person_org",
+    "name": "IDEA — Northeastern's Student-Run Venture Accelerator",
+    "url": "https://www.northeastern.edu/idea/",
+    "date_or_cadence": "Rolling admission during the academic year",
+    "who_it_serves": "Ventures with a Northeastern-affiliated founder; also a source of co-op talent for any local startup",
+    "tags": [
+      "accelerator",
+      "northeastern",
+      "students",
+      "free",
+      "talent",
+      "boston"
+    ],
+    "why_it_matters": "Free coaching and gap funding if you have any Northeastern connection, and even if you don't, it's the front door to Northeastern's co-op programme — six-month full-time student talent at intern rates.",
+    "cost": "Free",
+    "contact_route": "Contact form on the IDEA site",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-bu-innovate",
+    "type": "person_org",
+    "name": "Innovate@BU / BUild Lab",
+    "url": "https://www.bu.edu/innovate/",
+    "date_or_cadence": "Year-round programming; some events open to the public",
+    "who_it_serves": "BU-affiliated founders plus public attendees at open events",
+    "tags": [
+      "university",
+      "boston",
+      "free",
+      "workshops",
+      "talent",
+      "coaching"
+    ],
+    "why_it_matters": "The BUild Lab runs open coaching hours and community events, and BU students are a realistic source of first marketing and engineering help for a solo founder with no budget.",
+    "cost": "Free",
+    "contact_route": "Contact and events pages on bu.edu/innovate",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-venture-cafe-cambridge",
+    "type": "person_org",
+    "name": "Venture Café Cambridge (org)",
+    "url": "https://venturecafecambridge.org/contact/",
+    "date_or_cadence": "Year-round; programming team accepts session proposals",
+    "who_it_serves": "Anyone in the Greater Boston innovation community",
+    "tags": [
+      "community",
+      "cambridge",
+      "speaking-slot",
+      "free",
+      "intro-path"
+    ],
+    "why_it_matters": "You can propose to run a session at the Thursday Gathering. Going from attendee to session host is the cheapest credibility jump available to a Boston founder — and it's a form, not a favour.",
+    "cost": "Free",
+    "contact_route": "Public contact form; session proposal form on the site",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-massventures",
+    "type": "person_org",
+    "name": "MassVentures (state-backed venture funder)",
+    "url": "https://www.mass-ventures.com/",
+    "date_or_cadence": "Year-round; START and other grant programmes on published cycles",
+    "who_it_serves": "Massachusetts-based startups, including very early ones seeking non-dilutive grants",
+    "tags": [
+      "grant",
+      "non-dilutive",
+      "massachusetts",
+      "funding",
+      "state",
+      "deadline"
+    ],
+    "why_it_matters": "State-backed and explicitly mandated to fund Massachusetts companies, so being local is an advantage rather than a neutral fact. Non-dilutive money is rare and under-applied for.",
+    "cost": "Free to apply",
+    "contact_route": "Programme contact details on mass-ventures.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-masstech-collaborative",
+    "type": "person_org",
+    "name": "Massachusetts Technology Collaborative (MassTech)",
+    "url": "https://masstech.org/",
+    "date_or_cadence": "Year-round; grant and programme deadlines published per initiative",
+    "who_it_serves": "Massachusetts tech companies across digital health, cybersecurity, robotics and broader tech",
+    "tags": [
+      "grant",
+      "state",
+      "massachusetts",
+      "non-dilutive",
+      "deadline",
+      "programmes"
+    ],
+    "why_it_matters": "A quasi-public agency whose job is to spend money on Massachusetts tech companies. Most founders never check the programme list, which is exactly why it's worth 20 minutes.",
+    "cost": "Free",
+    "contact_route": "Programme contact pages on masstech.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-msbdc",
+    "type": "person_org",
+    "name": "Massachusetts Small Business Development Center Network (MSBDC)",
+    "url": "https://www.msbdc.org/",
+    "date_or_cadence": "Year-round free one-to-one advising; regional offices including Boston",
+    "who_it_serves": "Any Massachusetts small business or startup, explicitly including non-technical solo founders",
+    "tags": [
+      "advising",
+      "free",
+      "massachusetts",
+      "one-to-one",
+      "government",
+      "underused"
+    ],
+    "why_it_matters": "Free, unlimited, confidential one-to-one business advising funded by the SBA. It is the single most under-used resource on this list because it sounds boring — book the hour.",
+    "cost": "Free",
+    "contact_route": "Regional office request form on msbdc.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-score-boston",
+    "type": "person_org",
+    "name": "SCORE Boston — Free Mentorship",
+    "url": "https://boston.score.org/",
+    "date_or_cadence": "Year-round; mentor matching within days, plus free workshops",
+    "who_it_serves": "Early-stage and small-business founders in Greater Boston",
+    "tags": [
+      "mentorship",
+      "free",
+      "boston",
+      "one-to-one",
+      "workshops",
+      "fast"
+    ],
+    "why_it_matters": "Free mentorship from retired executives, matched in days rather than months. Low prestige, unusually high signal-to-time ratio for a founder with no advisors.",
+    "cost": "Free",
+    "contact_route": "Mentor request form on boston.score.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-becma",
+    "type": "person_org",
+    "name": "Black Economic Council of Massachusetts (BECMA)",
+    "url": "https://www.becma.org/",
+    "date_or_cadence": "Year-round membership and events calendar",
+    "who_it_serves": "Black-owned businesses and founders in Massachusetts, plus allies and partners",
+    "tags": [
+      "community",
+      "massachusetts",
+      "membership",
+      "advocacy",
+      "events",
+      "network"
+    ],
+    "why_it_matters": "A genuine local business network with real procurement and partnership connections rather than a pure networking group — relevant if you're a member or looking for partners in the community.",
+    "cost": "Membership tiers; some events free",
+    "contact_route": "Public contact form on becma.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-amplify-latinx",
+    "type": "person_org",
+    "name": "Amplify Latinx",
+    "url": "https://amplifylatinx.co/",
+    "date_or_cadence": "Year-round; events and network programming across Massachusetts",
+    "who_it_serves": "Latinx founders, professionals and businesses in Massachusetts",
+    "tags": [
+      "community",
+      "massachusetts",
+      "network",
+      "events",
+      "advocacy"
+    ],
+    "why_it_matters": "A well-connected identity-based business network in Massachusetts with real institutional relationships — a faster route to warm introductions than cold general-purpose networking.",
+    "cost": "Free to engage; some events ticketed",
+    "contact_route": "Contact form on amplifylatinx.co",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-pillar-vc",
+    "type": "person_org",
+    "name": "Pillar VC",
+    "url": "https://www.pillar.vc/",
+    "date_or_cadence": "Year-round; runs recurring founder programming",
+    "who_it_serves": "Pre-seed and seed Boston-area founders, generalist with a technical lean",
+    "tags": [
+      "vc",
+      "boston",
+      "pre-seed",
+      "community",
+      "programmes",
+      "warm-intro"
+    ],
+    "why_it_matters": "Boston-based and unusually open about pre-seed — they publish programming aimed at founders who haven't raised yet, which makes a cold approach less cold.",
+    "cost": "Free to contact",
+    "contact_route": "Contact page on pillar.vc",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-flybridge",
+    "type": "person_org",
+    "name": "Flybridge Capital Partners",
+    "url": "https://www.flybridge.com/",
+    "date_or_cadence": "Year-round; also runs the NextGen Partners community",
+    "who_it_serves": "Seed-stage founders; strong consumer and community-driven track record",
+    "tags": [
+      "vc",
+      "boston",
+      "seed",
+      "consumer",
+      "community",
+      "content"
+    ],
+    "why_it_matters": "Boston seed fund with a long history of publishing openly for founders, which gives you something specific and genuine to reference in a first email.",
+    "cost": "Free to contact",
+    "contact_route": "Contact page on flybridge.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-glasswing-ventures",
+    "type": "person_org",
+    "name": "Glasswing Ventures",
+    "url": "https://glasswing.vc/",
+    "date_or_cadence": "Year-round",
+    "who_it_serves": "AI-native and frontier-tech startups at seed stage, Boston-based",
+    "tags": [
+      "vc",
+      "boston",
+      "ai",
+      "seed",
+      "niche",
+      "technical"
+    ],
+    "why_it_matters": "Explicitly AI-focused and Boston-headquartered — a precise fit if your product is AI-native, and a waste of a send if it isn't. Only pitch if the thesis genuinely matches.",
+    "cost": "Free to contact",
+    "contact_route": "Contact form on glasswing.vc",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-nevca",
+    "type": "person_org",
+    "name": "New England Venture Capital Association (NEVCA)",
+    "url": "https://www.newenglandvc.org/",
+    "date_or_cadence": "Year-round; runs events and community programmes across New England",
+    "who_it_serves": "Founders and investors across the New England innovation economy",
+    "tags": [
+      "network",
+      "new-england",
+      "vc",
+      "events",
+      "directory",
+      "warm-intro"
+    ],
+    "why_it_matters": "The trade body for the region's investors, which makes its member directory a map of who actually writes cheques in Boston — better targeting than scrolling Crunchbase.",
+    "cost": "Free to browse; events vary",
+    "contact_route": "Contact form on newenglandvc.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-boston-globe-tips",
+    "type": "person_org",
+    "name": "The Boston Globe — Newsroom Tip Line",
+    "url": "https://www.bostonglobe.com/",
+    "date_or_cadence": "Year-round; business and technology desks",
+    "who_it_serves": "Companies and people with a genuinely newsworthy Boston story",
+    "tags": [
+      "press",
+      "boston",
+      "tip-line",
+      "local-media",
+      "high-bar",
+      "free"
+    ],
+    "why_it_matters": "The highest-reach local outlet in Boston. The bar is a real news hook — a launch alone is not one, but a funded local milestone or a story with a human angle can be.",
+    "cost": "Free",
+    "contact_route": "Published newsroom tips and contact pages on bostonglobe.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-bostinno",
+    "type": "person_org",
+    "name": "BostInno / Boston Business Journal Inno desk",
+    "url": "https://www.bizjournals.com/boston/inno",
+    "date_or_cadence": "Daily coverage of Boston startups",
+    "who_it_serves": "Boston startups at any stage with funding, launch or hiring news",
+    "tags": [
+      "press",
+      "boston",
+      "startups",
+      "tip-line",
+      "achievable",
+      "local-media"
+    ],
+    "why_it_matters": "Covers genuinely small Boston startups, not just funded ones — a realistic first press hit, unlike national tech media. Read three recent pieces before pitching the reporter whose beat matches.",
+    "cost": "Free to pitch; some articles paywalled",
+    "contact_route": "Reporter bylines and published desk contacts on the Inno section",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-wbur",
+    "type": "person_org",
+    "name": "WBUR — Boston's NPR Newsroom",
+    "url": "https://www.wbur.org/",
+    "date_or_cadence": "Year-round; business, tech and local-life desks",
+    "who_it_serves": "Stories with a Boston human-interest or civic angle rather than a pure product angle",
+    "tags": [
+      "press",
+      "radio",
+      "boston",
+      "human-interest",
+      "tip-line",
+      "free"
+    ],
+    "why_it_matters": "WBUR wants the person and the community effect, not the feature list. If your app changes something about how Bostonians live, that's the framing to lead with.",
+    "cost": "Free",
+    "contact_route": "Published newsroom contact and tips pages on wbur.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-universal-hub",
+    "type": "person_org",
+    "name": "Universal Hub",
+    "url": "https://www.universalhub.com/",
+    "date_or_cadence": "Daily; long-running independent Boston news blog",
+    "who_it_serves": "Anything genuinely, specifically Boston — neighbourhood-level relevance beats polish",
+    "tags": [
+      "press",
+      "boston",
+      "hyperlocal",
+      "blog",
+      "free",
+      "achievable"
+    ],
+    "why_it_matters": "Small, independent and read obsessively by long-time Bostonians. An unusually reachable first mention if your product is tied to a neighbourhood or a local quirk.",
+    "cost": "Free",
+    "contact_route": "Public contact/tips link on universalhub.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-greater-boston-chamber",
+    "type": "person_org",
+    "name": "Greater Boston Chamber of Commerce",
+    "url": "https://www.bostonchamber.com/",
+    "date_or_cadence": "Year-round; events calendar plus small-business programmes",
+    "who_it_serves": "Boston-area businesses of every size, including one-person companies",
+    "tags": [
+      "chamber",
+      "boston",
+      "network",
+      "events",
+      "business",
+      "membership"
+    ],
+    "why_it_matters": "The room where Boston's established businesses are, which is where a consumer app finds partners and a B2B product finds pilots. Different crowd from the startup circuit entirely.",
+    "cost": "Some events free; membership paid",
+    "contact_route": "Public contact form on bostonchamber.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-cic-boston",
+    "type": "person_org",
+    "name": "CIC (Cambridge Innovation Center) — Boston & Cambridge",
+    "url": "https://cic.com/",
+    "date_or_cadence": "Year-round; day passes and flexible desks available",
+    "who_it_serves": "Startups wanting a desk inside the densest startup building in the region",
+    "tags": [
+      "coworking",
+      "cambridge",
+      "boston",
+      "venue",
+      "network",
+      "paid"
+    ],
+    "why_it_matters": "A day pass buys you proximity to hundreds of startups plus the Venture Café gathering in the same building — the cheapest way to test whether a paid space is worth it.",
+    "cost": "Paid; day passes available",
+    "contact_route": "Enquiry and tour booking form on cic.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-workbar",
+    "type": "person_org",
+    "name": "Workbar — Greater Boston Coworking",
+    "url": "https://www.workbar.com/",
+    "date_or_cadence": "Year-round; multiple Greater Boston locations",
+    "who_it_serves": "Solo founders and small teams wanting neighbourhood coworking outside the Kendall/Seaport core",
+    "tags": [
+      "coworking",
+      "boston",
+      "suburbs",
+      "community",
+      "paid",
+      "events"
+    ],
+    "why_it_matters": "Locations in neighbourhoods and suburbs where your actual consumer users live, rather than where investors cluster — useful if your customer isn't a tech worker.",
+    "cost": "Paid; free tours",
+    "contact_route": "Tour and contact form on workbar.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-somerville-econ-dev",
+    "type": "person_org",
+    "name": "City of Somerville — Economic Development",
+    "url": "https://www.somervillema.gov/economicdevelopment",
+    "date_or_cadence": "Year-round advising; grant and storefront programmes announced periodically",
+    "who_it_serves": "Businesses based in Somerville — dense, young, high concentration of early-stage companies",
+    "tags": [
+      "government",
+      "somerville",
+      "grant",
+      "free",
+      "advising",
+      "neighbourhood"
+    ],
+    "why_it_matters": "Somerville has more startup density per square mile than almost anywhere in the region and runs its own business support programmes with a tiny applicant pool.",
+    "cost": "Free",
+    "contact_route": "Department contact details on somervillema.gov",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-boston-small-business",
+    "type": "person_org",
+    "name": "City of Boston — Office of Small Business",
+    "url": "https://www.boston.gov/departments/small-business-development",
+    "date_or_cadence": "Year-round advising; grant rounds announced periodically",
+    "who_it_serves": "Businesses based in the City of Boston, including very small and pre-revenue ones",
+    "tags": [
+      "government",
+      "grant",
+      "boston",
+      "free",
+      "advising",
+      "non-dilutive"
+    ],
+    "why_it_matters": "City-level grants and free advising with far less competition than state or federal programmes, because most tech founders never think to look at boston.gov.",
+    "cost": "Free",
+    "contact_route": "Department contact details on boston.gov",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-mass-growth-capital",
+    "type": "person_org",
+    "name": "Massachusetts Growth Capital Corporation (MGCC)",
+    "url": "https://www.empoweringsmallbusiness.org/",
+    "date_or_cadence": "Year-round loans and technical assistance; grant rounds periodic",
+    "who_it_serves": "Massachusetts small businesses, with an explicit focus on under-served founders",
+    "tags": [
+      "grant",
+      "loan",
+      "massachusetts",
+      "state",
+      "non-dilutive",
+      "deadline"
+    ],
+    "why_it_matters": "State capital aimed at small businesses rather than venture-scale startups — the right door if you're building something real and revenue-generating that VCs would call too small.",
+    "cost": "Free to apply",
+    "contact_route": "Programme contact forms on the MGCC site",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-bpl-kirstein",
+    "type": "person_org",
+    "name": "Boston Public Library — Kirstein Business Library & Innovation Center",
+    "url": "https://www.bpl.org/business/",
+    "date_or_cadence": "Year-round free workshops and one-to-one research help",
+    "who_it_serves": "Any Boston founder needing market research, industry data or business-plan help",
+    "tags": [
+      "free",
+      "boston",
+      "research",
+      "market-data",
+      "workshops",
+      "underused"
+    ],
+    "why_it_matters": "Free librarian-led access to paid market-research databases a solo founder could never afford. Nearly nobody uses it, and it directly replaces hours of unstructured googling.",
+    "cost": "Free with a library card",
+    "contact_route": "Appointment request form on bpl.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-builtin-boston",
+    "type": "person_org",
+    "name": "Built In Boston",
+    "url": "https://www.builtinboston.com/",
+    "date_or_cadence": "Daily; company profiles, local tech news and hiring content",
+    "who_it_serves": "Boston tech companies wanting visibility with local tech workers and jobseekers",
+    "tags": [
+      "press",
+      "directory",
+      "boston",
+      "free-listing",
+      "talent",
+      "seo"
+    ],
+    "why_it_matters": "A free company profile gets you indexed as a Boston tech company, which is how local candidates and reporters stumble onto you without you doing anything.",
+    "cost": "Free company profile",
+    "contact_route": "Company listing signup on builtinboston.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "org-boston-business-journal",
+    "type": "person_org",
+    "name": "Boston Business Journal",
+    "url": "https://www.bizjournals.com/boston",
+    "date_or_cadence": "Daily; plus annual awards and lists with open nominations",
+    "who_it_serves": "Boston businesses with growth, funding or hiring news; nominees for local awards",
+    "tags": [
+      "press",
+      "boston",
+      "awards",
+      "nominations",
+      "business",
+      "credibility"
+    ],
+    "why_it_matters": "The awards and lists take open self-nominations, which is a rare case where you can put yourself in front of local press without a news hook at all.",
+    "cost": "Free to nominate; subscription for full access",
+    "contact_route": "Nomination forms and published reporter contacts",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-reddit-boston",
+    "type": "channel",
+    "name": "r/boston",
+    "url": "https://www.reddit.com/r/boston/",
+    "date_or_cadence": "Always on; read the rules before posting — self-promotion is restricted",
+    "who_it_serves": "General Boston residents; very large but promotion-hostile",
+    "tags": [
+      "reddit",
+      "boston",
+      "consumer",
+      "free",
+      "high-risk",
+      "rules"
+    ],
+    "why_it_matters": "The biggest concentration of Boston consumers online, and the fastest way to get your product hated if you post an ad. Participate genuinely for a week, then ask a question rather than pitching.",
+    "cost": "Free",
+    "contact_route": "Post publicly; message the mod team for permission first",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-reddit-cambridgema",
+    "type": "channel",
+    "name": "r/CambridgeMA",
+    "url": "https://www.reddit.com/r/CambridgeMA/",
+    "date_or_cadence": "Always on; smaller and more tolerant of local-business posts than r/boston",
+    "who_it_serves": "Cambridge and Somerville residents — dense, young, tech-adjacent",
+    "tags": [
+      "reddit",
+      "cambridge",
+      "consumer",
+      "free",
+      "neighbourhood",
+      "achievable"
+    ],
+    "why_it_matters": "Small enough that a genuine 'I built this for Cambridge' post can land, unlike r/boston where it gets buried or removed. Best free consumer test in the region.",
+    "cost": "Free",
+    "contact_route": "Post publicly; check the sidebar rules and mod contact",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-reddit-bostonsocialclub",
+    "type": "channel",
+    "name": "r/BostonSocialClub",
+    "url": "https://www.reddit.com/r/BostonSocialClub/",
+    "date_or_cadence": "Always on; built around people organising real-life Boston meetups",
+    "who_it_serves": "Bostonians actively looking to do things and meet people in person",
+    "tags": [
+      "reddit",
+      "boston",
+      "consumer",
+      "social",
+      "free",
+      "early-adopters"
+    ],
+    "why_it_matters": "A self-selected pool of people who already want to try new local things — the closest thing Boston has to a free early-adopter list for a consumer app.",
+    "cost": "Free",
+    "contact_route": "Post publicly; mod team via subreddit modmail",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-reddit-bostonstartups",
+    "type": "channel",
+    "name": "r/startups (with Boston-specific threads)",
+    "url": "https://www.reddit.com/r/startups/",
+    "date_or_cadence": "Always on; weekly share-your-startup and feedback threads",
+    "who_it_serves": "Founders anywhere, including a steady Boston contingent",
+    "tags": [
+      "reddit",
+      "feedback",
+      "free",
+      "weekly-thread",
+      "founders",
+      "not-local"
+    ],
+    "why_it_matters": "Not local, but the weekly feedback threads are the cheapest honest critique of your pitch before you spend a Boston introduction on it. Use it as a rehearsal room.",
+    "cost": "Free",
+    "contact_route": "Post in the designated weekly threads only",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-meetup-boston-startups",
+    "type": "channel",
+    "name": "Meetup — Boston startup & tech groups",
+    "url": "https://www.meetup.com/find/?location=us--ma--Boston&source=EVENTS&keywords=startup",
+    "date_or_cadence": "Always on; dozens of Boston groups with recurring events",
+    "who_it_serves": "Founders looking for niche, small-group events in their exact category",
+    "tags": [
+      "meetup",
+      "boston",
+      "discovery",
+      "free",
+      "niche",
+      "long-tail"
+    ],
+    "why_it_matters": "The long tail beneath the big-name events — a 20-person meetup in your exact niche converts far better than a 500-person mixer, and it's where you can actually get a speaking slot.",
+    "cost": "Free to browse; most groups free",
+    "contact_route": "Message group organisers through Meetup",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-eventbrite-boston",
+    "type": "channel",
+    "name": "Eventbrite — Boston business & startup events",
+    "url": "https://www.eventbrite.com/d/ma--boston/business--events/",
+    "date_or_cadence": "Always on; rolling listings",
+    "who_it_serves": "Anyone scanning for what's happening in Boston in the next two weeks",
+    "tags": [
+      "eventbrite",
+      "boston",
+      "discovery",
+      "free",
+      "calendar",
+      "long-tail"
+    ],
+    "why_it_matters": "Where the events that aren't on anyone's curated list live. Also where you list your own event for free once you're ready to convene rather than attend.",
+    "cost": "Free to browse; free to list a free event",
+    "contact_route": "Browse and list directly on Eventbrite",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-venture-cafe-newsletter",
+    "type": "channel",
+    "name": "Venture Café Cambridge — Weekly Programme Newsletter",
+    "url": "https://venturecafecambridge.org/",
+    "date_or_cadence": "Weekly, ahead of each Thursday Gathering",
+    "who_it_serves": "Anyone in the Greater Boston innovation community",
+    "tags": [
+      "newsletter",
+      "weekly",
+      "cambridge",
+      "free",
+      "calendar",
+      "signal"
+    ],
+    "why_it_matters": "The single best weekly read on what's happening in Boston innovation, and reading it is how you spot the one session worth reorganising your Thursday around.",
+    "cost": "Free",
+    "contact_route": "Newsletter signup on the site",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-startup-boston-newsletter",
+    "type": "channel",
+    "name": "Startup Boston — Community Newsletter & Slack",
+    "url": "https://www.startupbos.org/",
+    "date_or_cadence": "Regular community updates; year-round community channels",
+    "who_it_serves": "Boston startup operators and founders",
+    "tags": [
+      "newsletter",
+      "slack",
+      "boston",
+      "free",
+      "community",
+      "operators"
+    ],
+    "why_it_matters": "Operator-run rather than sponsor-run, so the tone is peer-to-peer. A question posted in the community reads as participation, not promotion.",
+    "cost": "Free",
+    "contact_route": "Signup links on startupbos.org",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-boston-gov-business",
+    "type": "channel",
+    "name": "Boston.gov — Business Grants & Funding Listings",
+    "url": "https://www.boston.gov/small-business",
+    "date_or_cadence": "Rolling; individual grant rounds have hard deadlines",
+    "who_it_serves": "Businesses physically located in the City of Boston",
+    "tags": [
+      "grant",
+      "government",
+      "boston",
+      "non-dilutive",
+      "deadline",
+      "underused"
+    ],
+    "why_it_matters": "A live list of city money with real deadlines. Check it monthly — the applications are short and the applicant pool is small because nobody in tech reads boston.gov.",
+    "cost": "Free",
+    "contact_route": "Application links on each programme page",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-sba-massachusetts",
+    "type": "channel",
+    "name": "U.S. Small Business Administration — Massachusetts District Office",
+    "url": "https://www.sba.gov/district/massachusetts",
+    "date_or_cadence": "Year-round; free local workshops and counselling",
+    "who_it_serves": "Any Massachusetts small business, including pre-revenue",
+    "tags": [
+      "government",
+      "free",
+      "massachusetts",
+      "workshops",
+      "funding",
+      "advising"
+    ],
+    "why_it_matters": "Free federal counselling delivered locally, plus the loan and grant programmes most founders assume they're not eligible for. Worth one hour to find out whether you are.",
+    "cost": "Free",
+    "contact_route": "District office contact details on sba.gov",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-grants-gov",
+    "type": "channel",
+    "name": "Grants.gov — federal grant search (filter to Massachusetts)",
+    "url": "https://www.grants.gov/search-grants",
+    "date_or_cadence": "Always on; every listing carries a hard close date",
+    "who_it_serves": "Startups whose work touches research, health, education, climate or civic needs",
+    "tags": [
+      "grant",
+      "federal",
+      "non-dilutive",
+      "deadline",
+      "research",
+      "high-effort"
+    ],
+    "why_it_matters": "Non-dilutive and large, but the applications are long — only worth it if your product maps to a funded programme area. Filter first, then decide, rather than browsing hopefully.",
+    "cost": "Free",
+    "contact_route": "Apply through Grants.gov; each listing lists a programme officer",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-sbir-sttr",
+    "type": "channel",
+    "name": "SBIR/STTR — America's Seed Fund",
+    "url": "https://www.sbir.gov/",
+    "date_or_cadence": "Rolling solicitations by agency, each with its own deadline",
+    "who_it_serves": "Startups with a technical or research component; Massachusetts is consistently a top-receiving state",
+    "tags": [
+      "grant",
+      "federal",
+      "non-dilutive",
+      "technical",
+      "deadline",
+      "massachusetts"
+    ],
+    "why_it_matters": "Equity-free federal funding at meaningful size, and MassVentures runs a state programme specifically to help Massachusetts SBIR winners commercialise — the two stack.",
+    "cost": "Free to apply",
+    "contact_route": "Agency solicitation pages on sbir.gov",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-product-hunt",
+    "type": "channel",
+    "name": "Product Hunt (launch channel)",
+    "url": "https://www.producthunt.com/",
+    "date_or_cadence": "Daily launches; you pick your date",
+    "who_it_serves": "Consumer and prosumer apps with a working product and a clear one-line hook",
+    "tags": [
+      "launch",
+      "global",
+      "free",
+      "consumer",
+      "one-shot",
+      "not-local"
+    ],
+    "why_it_matters": "Not local, and that's the point — it's the one global channel worth spending a day on because a top-five finish produces press and signups that a Boston-only push can't.",
+    "cost": "Free",
+    "contact_route": "Self-serve launch on producthunt.com",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-indie-hackers",
+    "type": "channel",
+    "name": "Indie Hackers",
+    "url": "https://www.indiehackers.com/",
+    "date_or_cadence": "Always on; active daily discussion",
+    "who_it_serves": "Bootstrapped and solo founders, strongly non-VC in culture",
+    "tags": [
+      "community",
+      "bootstrapped",
+      "free",
+      "feedback",
+      "solo-founder",
+      "not-local"
+    ],
+    "why_it_matters": "The community whose norms actually match a bootstrapped solo founder's reality, and posting a build-in-public update is welcomed rather than tolerated.",
+    "cost": "Free",
+    "contact_route": "Post publicly after creating an account",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-boston-linkedin-local",
+    "type": "channel",
+    "name": "LinkedIn — Boston founder & local-business content",
+    "url": "https://www.linkedin.com/",
+    "date_or_cadence": "Always on; posting cadence is yours to set",
+    "who_it_serves": "Boston professionals, local press and investors who monitor the local feed",
+    "tags": [
+      "social",
+      "boston",
+      "free",
+      "content",
+      "b2b",
+      "slow-burn"
+    ],
+    "why_it_matters": "Geo-tagged Boston posts reach local reporters and investors who lurk without engaging. Slow, but it is the channel that makes later cold emails warm.",
+    "cost": "Free",
+    "contact_route": "Post publicly from your own profile; no scraping or bulk outreach",
+    "last_verified": "2026-09-19"
+  },
+  {
+    "id": "chn-nextdoor-boston",
+    "type": "channel",
+    "name": "Nextdoor — Boston neighbourhoods",
+    "url": "https://nextdoor.com/",
+    "date_or_cadence": "Always on; neighbourhood-scoped",
+    "who_it_serves": "Consumer products serving residents of a specific Boston neighbourhood",
+    "tags": [
+      "social",
+      "hyperlocal",
+      "consumer",
+      "free",
+      "neighbourhood",
+      "verified-residents"
+    ],
+    "why_it_matters": "The only channel here that is genuinely neighbourhood-level and verified-resident. If your app serves people in Jamaica Plain rather than 'Boston', this is where they actually are.",
+    "cost": "Free",
+    "contact_route": "Post in your own verified neighbourhood; business pages available",
+    "last_verified": "2026-09-19"
+  }
+]

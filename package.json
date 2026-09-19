@@ -1,0 +1,17 @@
+{
+  "name": "hyperlocal-gtm-corpus",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Founder profile, corpus adapter and matching layer for the Hyperlocal GTM Copilot",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "verify": "node scripts/verify-urls.mjs",
+    "seed": "node scripts/seed.mjs",
+    "match": "node scripts/demo-match.mjs",
+    "health": "node scripts/health.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}
