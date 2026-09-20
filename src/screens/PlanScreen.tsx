@@ -58,9 +58,10 @@ export function PlanScreen({ plan, onRestart, fallbackUsed = false, meta, elapse
         <View style={styles.fallbackNote}>
           <Text style={styles.fallbackTitle}>Example plan</Text>
           <Text style={styles.fallbackBody}>
-            We couldn't reach the live generator, so this is a real plan we
-            generated earlier — for a different founder. The opportunities and
-            links are genuine; the reasoning is not about your product.
+            This is a worked example, not a plan generated for what you just
+            typed. The organisations are real Boston ones and the links work,
+            but some dates and contact routes are illustrative rather than
+            checked — unlike the verified corpus a live run draws from.
           </Text>
         </View>
       ) : null}

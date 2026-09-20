@@ -30,10 +30,15 @@ export const CORPUS_SIZE = 60;
  * report it. Values are from the real run that produced SAMPLE_PLAN.
  */
 /**
- * Pipeline telemetry for the recorded plan. Not hand-written — these are the
- * values lib/profile.mjs and lib/match.mjs actually produce for SAMPLE_PROFILE
- * below, so the "under the hood" panel stays true in demo mode. If you change
- * SAMPLE_PROFILE, re-derive these rather than guessing.
+ * Pipeline figures for SAMPLE_PROFILE. Derived by running lib/profile.mjs and
+ * lib/match.mjs against it, not hand-written — re-derive rather than guess if
+ * SAMPLE_PROFILE changes.
+ *
+ * These describe what the pipeline DOES for that profile. They do not describe
+ * the items below, which are hand-authored placeholders with synthetic ids, so
+ * do not add per-item match_score / match_reasons here — there is no real
+ * scoring behind them and inventing some would be the exact failure this
+ * product exists to avoid.
  */
 export const SAMPLE_META = {
   corpusSize: CORPUS_SIZE,
@@ -109,7 +114,7 @@ export const SAMPLE_PLAN: Plan = {
       type: 'event',
       rank: 6,
       name: 'Boston New Technology Startup Showcase',
-      url: 'https://www.bostonnewtechnology.com/',
+      url: 'https://www.meetup.com/bostonnewtechnology/',
       date_or_cadence: 'Monthly, usually a weekday evening',
       who_it_serves: 'Early-stage founders demoing to a local tech audience of 100+.',
       tags: ['startup', 'demo', 'consumer', 'monthly'],

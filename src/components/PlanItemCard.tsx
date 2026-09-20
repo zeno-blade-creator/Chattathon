@@ -39,6 +39,22 @@ export function PlanItemCard({ item, status, onStatusChange }: Props) {
         <Text style={styles.whyText}>{item.why_you_why_now}</Text>
       </View>
 
+      {/* The deterministic half, deliberately separated from the model's prose
+          above. This score and these reasons were computed before any model
+          call — they are why the item was a candidate at all. Showing them
+          means a reader can check the ranking without trusting the writing. */}
+      {item.match_reasons && item.match_reasons.length > 0 ? (
+        <View style={styles.match}>
+          <View style={styles.matchHead}>
+            <Text style={styles.matchLabel}>Matched before the model ran</Text>
+            {typeof item.match_score === 'number' ? (
+              <Text style={styles.matchScore}>score {item.match_score}</Text>
+            ) : null}
+          </View>
+          <Text style={styles.matchText}>{item.match_reasons.join(' · ')}</Text>
+        </View>
+      ) : null}
+
       {item.opener ? (
         <View style={styles.opener}>
           <Text style={styles.blockLabel}>What to say when you walk up</Text>
@@ -159,6 +175,26 @@ const styles = StyleSheet.create({
   cardMuted: { opacity: 0.52 },
 
   header: { flexDirection: 'row', gap: space.md },
+  match: {
+    marginTop: space.md,
+    paddingTop: space.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
+  },
+  matchHead: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    marginBottom: 2,
+  },
+  matchLabel: { ...type.label, color: colors.inkFaint },
+  matchScore: {
+    ...type.small,
+    color: colors.mossDeep,
+    fontWeight: '600',
+    fontVariant: ['tabular-nums'],
+  },
+  matchText: { ...type.small, color: colors.inkMuted },
   rank: {
     width: 34,
     height: 34,
