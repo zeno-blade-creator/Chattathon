@@ -9,7 +9,7 @@
 //
 import { createServer } from 'node:http';
 import { loadCorpus }   from './lib/corpus.mjs';
-import { generatePlan, generatePlanSafe } from './lib/generate.mjs';
+import { generatePlan, generatePlanSafe, loadFallbackPlan } from './lib/generate.mjs';
 import { saveProfile, savePlan } from './lib/db.mjs';
 import { normalizeIntake } from './lib/normalize.mjs';
 import { buildProfile }    from './lib/profile.mjs';
@@ -83,10 +83,18 @@ createServer(async (req, res) => {
         emit('unsupported_city', { city: err.city,
           message: 'We cover Boston today. Tell us where you are and we will add your city next.' });
       } else {
-        // The client falls back to POST /generate, which serves the recorded
-        // plan. Streaming is an enhancement and must never be the only path.
+        // Degrade exactly as POST /generate does. Emitting a bare failure here
+        // made streaming strictly worse than the buffered path: with no model
+        // key the user saw an error screen where they used to get the recorded
+        // plan.
         console.error('stream failed:', err.message);
-        emit('failed', { error: err.message });
+        try {
+          emit('done', { status: 'ready', plan: loadFallbackPlan(),
+                         meta: { error: err.message }, profileId: null,
+                         fallbackUsed: true, ms: Date.now() - t0 });
+        } catch {
+          emit('failed', { error: err.message });
+        }
       }
     }
     return res.end();

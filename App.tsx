@@ -56,7 +56,9 @@ export default function App() {
     // stages. A null result means streaming was unavailable or died mid-flight;
     // the plain endpoint is still there, including its own fallback plan.
     streamPlan(p, (e) => setStages((prev) => [...prev, e]))
-      .then((r) => (r ? finish(r) : generatePlan(p, mode).then(finish)))
+      // A streamed hard failure is not final either — the buffered endpoint has
+      // its own fallback plan, so try it before showing anyone an error.
+      .then((r) => (r && r.status !== 'failed' ? finish(r) : generatePlan(p, mode).then(finish)))
       .catch(() => generatePlan(p, mode).then(finish));
   };
 
