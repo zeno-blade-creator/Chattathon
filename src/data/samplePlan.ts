@@ -25,6 +25,27 @@ export const SUPPORTED_CITY = 'Boston';
  */
 export const CORPUS_SIZE = 60;
 
+/**
+ * Pipeline telemetry for the showcase build, where there is no server to
+ * report it. Values are from the real run that produced SAMPLE_PLAN.
+ */
+export const SAMPLE_META = {
+  corpusSize: CORPUS_SIZE,
+  shortlisted: 20,
+  candidates: 20,
+  signals: [
+    'b2b', 'boston', 'bootstrapped', 'business', 'chamber', 'community',
+    'consumer', 'early-adopters', 'free', 'intro-path', 'network', 'launch',
+  ],
+  stage: 'building',
+  goal: 'pilot-customers',
+  liveFound: 0,
+  liveUsed: 0,
+  rejected: [] as string[],
+  draftsMissing: [] as string[],
+  model: 'recorded',
+};
+
 /** Pre-filled so the intake screen can be demoed without typing six fields. */
 export const SAMPLE_PROFILE: IntakeProfile = {
   building: 'Cinch — an app that finds you a pickup basketball or soccer game happening near you in the next two hours.',

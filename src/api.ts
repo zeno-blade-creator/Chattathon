@@ -5,8 +5,8 @@
  * those need API keys, and everything in this bundle is public. The server
  * holds the keys; the app sends a profile and gets a finished plan.
  */
-import { SAMPLE_PLAN } from './data/samplePlan';
-import type { IntakeProfile, Plan } from './types';
+import { SAMPLE_META, SAMPLE_PLAN } from './data/samplePlan';
+import type { IntakeProfile, Plan, PlanMeta } from './types';
 
 const BASE = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8787';
 
@@ -22,7 +22,8 @@ export type Mode = 'ai' | 'demo';
 export const DEFAULT_MODE: Mode = SHOWCASE ? 'demo' : 'ai';
 
 export type GenerateResult =
-  | { status: 'ready'; plan: Plan; profileId: string | null; fallbackUsed: boolean }
+  | { status: 'ready'; plan: Plan; profileId: string | null; fallbackUsed: boolean;
+      meta?: PlanMeta; ms?: number }
   | { status: 'unsupported_city'; city: string; message: string }
   | { status: 'failed'; error: string };
 

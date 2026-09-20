@@ -55,6 +55,37 @@ export interface PlanItem extends CorpusEntry {
   };
   /** Events only: the one line to say when you walk up to someone. */
   opener?: string;
+  /**
+   * Score from the deterministic matcher, computed before any model call.
+   * Present for corpus entries, null for live discoveries (never scored).
+   */
+  match_score?: number | null;
+  /** Plain-English reasons the matcher surfaced this. Not model output. */
+  match_reasons?: string[];
+}
+
+/**
+ * What the pipeline did, per request. Exists so the interface can show the
+ * machinery — a scoring engine, a city gate and an enforcement pass otherwise
+ * look like "we asked a model".
+ */
+export interface PlanMeta {
+  corpusSize?: number;
+  shortlisted?: number;
+  candidates?: number;
+  signals?: string[];
+  stage?: string;
+  goal?: string;
+  liveFound?: number;
+  liveUsed?: number;
+  /** Ids the model returned that were not in allowed_ids, and were dropped. */
+  rejected?: string[];
+  itemIds?: string[];
+  draftsMissing?: string[];
+  model?: string;
+  usage?: { promptTokenCount?: number; candidatesTokenCount?: number; totalTokenCount?: number };
+  /** Present only on the fallback path. */
+  error?: string;
 }
 
 /** One of the five time-boxed actions in the Week One Plan. */

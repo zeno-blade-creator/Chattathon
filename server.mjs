@@ -73,8 +73,11 @@ createServer(async (req, res) => {
                 `live=${meta.liveUsed ?? 0} fallback=${fallbackUsed} profile=${saved?.id ?? 'unsaved'}`);
     if (fallbackUsed) console.error(`  fallback reason: ${meta.error}`);
 
+    // meta was computed and discarded. The interface needs it to show the
+    // pipeline: corpus size, derived signals, how many were shortlisted, what
+    // live discovery found, which invented ids were rejected.
     return send(res, 200, { status: 'ready', plan, profileId: saved?.id ?? null,
-                            fallbackUsed, ms: Date.now() - t0 });
+                            fallbackUsed, meta, ms: Date.now() - t0 });
   } catch (err) {
     if (err.code === 'CITY_UNSUPPORTED') {
       return send(res, 200, { status: 'unsupported_city', city: err.city,
