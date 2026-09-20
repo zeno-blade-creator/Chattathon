@@ -95,24 +95,7 @@ export default function App() {
       >
         <View style={styles.root}>
           {view === 'intake' ? (
-            <>
-              <View style={styles.modeBar} pointerEvents="box-none">
-                {(['ai', 'demo'] as const).map((m) => (
-                  <Pressable
-                    key={m}
-                    onPress={() => setMode(m)}
-                    accessibilityRole="radio"
-                    accessibilityState={{ selected: mode === m }}
-                    style={[styles.modeChip, mode === m && styles.modeChipOn]}
-                  >
-                    <Text style={[styles.modeText, mode === m && styles.modeTextOn]}>
-                      {m === 'ai' ? 'Live AI' : 'Demo (offline)'}
-                    </Text>
-                  </Pressable>
-                ))}
-              </View>
-              <IntakeScreen onGenerate={onGenerate} />
-            </>
+            <IntakeScreen onGenerate={onGenerate} mode={mode} onModeChange={setMode} />
           ) : null}
           {view === 'loading' ? <LoadingScreen onDone={() => setAnimDone(true)} stages={stages} /> : null}
           {view === 'plan' && plan ? <PlanScreen

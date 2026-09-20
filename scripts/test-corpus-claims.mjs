@@ -25,5 +25,17 @@ const loading = readFileSync(new URL('../src/screens/LoadingScreen.tsx', import.
 check('the loading copy does not hardcode a count',
   !/\d+\s+verified/.test(loading), 'use ${CORPUS_SIZE}');
 
+// The home screen shows real corpus names from a generated file. If the corpus
+// changes and nobody re-runs the generator, the screen quietly shows stale
+// evidence for a claim about verified data.
+const namesFile = readFileSync(new URL('../src/data/corpusNames.ts', import.meta.url), 'utf8');
+const generated = [...namesFile.matchAll(/"name": "((?:[^"\\]|\\.)*)"/g)]
+  .map(m => JSON.parse(`"${m[1]}"`));
+check('corpusNames.ts has every corpus entry', generated.length === corpus.length,
+  `generated ${generated.length}, corpus has ${corpus.length} — run node scripts/build-corpus-names.mjs`);
+const missing = corpus.map(e => e.name).filter(n => !generated.includes(n));
+check('every generated name matches the corpus', missing.length === 0,
+  `${missing.length} out of sync, e.g. ${missing[0] ?? ''}`);
+
 console.log(`\n${fails} failure(s).`);
 process.exit(fails ? 1 : 0);

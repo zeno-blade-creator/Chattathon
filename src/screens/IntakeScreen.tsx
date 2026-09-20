@@ -11,11 +11,13 @@ import {
   View,
 } from 'react-native';
 
+import type { Mode } from '../api';
 import { ChoiceGroup } from '../components/ChoiceGroup';
+import { CorpusMarquee } from '../components/CorpusMarquee';
 import { Field } from '../components/Field';
 import { HeroBackdrop } from '../components/HeroBackdrop';
 import { checkCity, SUPPORTED_CITY } from '../cityGuard';
-import { SAMPLE_PROFILE } from '../data/samplePlan';
+import { CORPUS_SIZE, SAMPLE_PROFILE } from '../data/samplePlan';
 import { colors, radius, shadow, space, type } from '../theme';
 import { GOAL_OPTIONS, STAGE_OPTIONS, type IntakeProfile } from '../types';
 
@@ -46,15 +48,26 @@ const NATIVE_DRIVER = Platform.OS !== 'web';
 
 interface Props {
   onGenerate: (profile: IntakeProfile) => void;
+  mode: Mode;
+  onModeChange: (m: Mode) => void;
 }
 
-export function IntakeScreen({ onGenerate }: Props) {
+export function IntakeScreen({ onGenerate, mode, onModeChange }: Props) {
   const [profile, setProfile] = useState<IntakeProfile>(EMPTY);
   // Only surface the out-of-area message after a submit attempt — warning
   // someone mid-keystroke that "Bos" is unsupported would be obnoxious.
   const [attempted, setAttempted] = useState(false);
 
-  const { height: windowHeight } = useWindowDimensions();
+  const { height: windowHeight, width: windowWidth } = useWindowDimensions();
+
+  /**
+   * The wordmark was a fixed 64px, which wrapped to "Inreac / h" in any window
+   * under about 420px. Seven characters at this face run to roughly 0.52x the
+   * font size each, so cap the size to the space actually available.
+   */
+  const brandSize = Math.round(
+    Math.max(34, Math.min(64, (windowWidth - space.xl * 2) / 7 / 0.62)),
+  );
   // Tall enough to be a statement, capped so the form is never pushed out of
   // reach on a short window.
   const heroHeight = Math.round(Math.min(460, Math.max(260, windowHeight * 0.52)));
@@ -122,10 +135,31 @@ export function IntakeScreen({ onGenerate }: Props) {
           height={heroHeight}
           style={{ transform: [{ translateY: ringsTranslate }] }}
         />
+        {/* Lives in the hero rather than pinned to the root: its chips are
+            white-on-dark, so when it was fixed it survived into the light panel
+            and sat unreadable on top of the copy. Here it fades with the hero. */}
+        <View style={styles.modeBar}>
+          {(['ai', 'demo'] as const).map((m) => (
+            <Pressable
+              key={m}
+              onPress={() => onModeChange(m)}
+              accessibilityRole="radio"
+              accessibilityState={{ selected: mode === m }}
+              style={[styles.modeChip, mode === m && styles.modeChipOn]}
+            >
+              <Text style={[styles.modeText, mode === m && styles.modeTextOn]}>
+                {m === 'ai' ? 'Live AI' : 'Demo (offline)'}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
         <Animated.View
           style={[styles.heroText, { transform: [{ translateY: titleTranslate }] }]}
         >
-          <Text style={styles.brand}>Inreach</Text>
+          <Text style={[styles.brand, { fontSize: brandSize, lineHeight: Math.round(brandSize * 1.09) }]}>
+            Inreach
+          </Text>
           <Text style={styles.brandRule} />
           <Text style={styles.brandSub}>
             The growth hire you can't afford yet. {SUPPORTED_CITY}, this week.
@@ -157,6 +191,16 @@ export function IntakeScreen({ onGenerate }: Props) {
                 Six questions, about two minutes. You get ten ranked local opportunities, the
                 email already written for each one, and a five-step plan for the week.
               </Text>
+
+              {/* The corpus, before you have typed anything. Real names, written
+                  by scripts/build-corpus-names.mjs from the verified file — the
+                  claim is hand-checked local data, so show it rather than say it. */}
+              <View style={styles.proof}>
+                <Text style={styles.proofLabel}>
+                  {CORPUS_SIZE} verified {SUPPORTED_CITY} entries, already loaded
+                </Text>
+                <CorpusMarquee />
+              </View>
 
               <Pressable onPress={() => setProfile(SAMPLE_PROFILE)} style={styles.demoLink}>
                 <Text style={styles.demoLinkText}>Fill with the sample founder →</Text>
@@ -274,6 +318,18 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
 
   hero: { position: 'absolute', top: 0, left: 0, right: 0 },
+  modeBar: {
+    position: 'absolute', top: space.md, right: space.lg, zIndex: 3,
+    flexDirection: 'row', gap: 6,
+  },
+  modeChip: {
+    paddingVertical: 4, paddingHorizontal: space.sm,
+    borderRadius: radius.pill, borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.45)',
+  },
+  modeChipOn: { backgroundColor: colors.surface, borderColor: colors.surface },
+  modeText: { ...type.small, color: 'rgba(255,255,255,0.85)' },
+  modeTextOn: { color: colors.deepGreen, fontWeight: '600' },
   heroText: {
     position: 'absolute',
     left: 0,
@@ -286,8 +342,7 @@ const styles = StyleSheet.create({
   },
   brand: {
     fontFamily: type.display.fontFamily,
-    fontSize: 64,
-    lineHeight: 70,
+    // fontSize and lineHeight are set per-render from the window width.
     fontWeight: '700',
     letterSpacing: -2,
     color: colors.surface,
@@ -321,6 +376,13 @@ const styles = StyleSheet.create({
 
   display: { ...type.display, color: colors.ink, marginBottom: space.md },
   sub: { ...type.body, color: colors.inkMuted },
+  proof: {
+    marginTop: space.lg,
+    paddingTop: space.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
+  },
+  proofLabel: { ...type.label, color: colors.inkFaint, marginBottom: space.xs },
   demoLink: { marginTop: space.lg, alignSelf: 'flex-start' },
   demoLinkText: { ...type.smallStrong, color: colors.midGreen },
   rule: {
