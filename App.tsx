@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { DEFAULT_MODE, generatePlan, type GenerateResult, type Mode } from './src/api';
+import { streamPlan, type StageEvent } from './src/streamPlan';
 import { IntakeScreen } from './src/screens/IntakeScreen';
 import { LoadingScreen } from './src/screens/LoadingScreen';
 import { PlanScreen } from './src/screens/PlanScreen';
@@ -33,13 +34,30 @@ export default function App() {
   const result = useRef<GenerateResult | null>(null);
   const [animDone, setAnimDone] = useState(false);
   const [settled, setSettled] = useState(false);
+  /** Live pipeline events. Empty in demo mode or when streaming is unavailable. */
+  const [stages, setStages] = useState<StageEvent[]>([]);
 
   const onGenerate = (p: IntakeProfile) => {
     result.current = null;
     setAnimDone(false);
     setSettled(false);
+    setStages([]);
     setView('loading');
-    generatePlan(p, mode).then((r) => { result.current = r; setSettled(true); });
+
+    const finish = (r: GenerateResult) => { result.current = r; setSettled(true); };
+
+    if (mode === 'demo') {
+      // Recorded plan: instant, and there is no pipeline to narrate.
+      generatePlan(p, mode).then(finish);
+      return;
+    }
+
+    // Try the streaming pipeline first so the loading screen can show real
+    // stages. A null result means streaming was unavailable or died mid-flight;
+    // the plain endpoint is still there, including its own fallback plan.
+    streamPlan(p, (e) => setStages((prev) => [...prev, e]))
+      .then((r) => (r ? finish(r) : generatePlan(p, mode).then(finish)))
+      .catch(() => generatePlan(p, mode).then(finish));
   };
 
   useEffect(() => {
@@ -60,7 +78,7 @@ export default function App() {
 
   const onRestart = () => {
     setPlan(null); setNotice(''); setFallbackUsed(false);
-    setMeta(undefined); setElapsedMs(undefined); result.current = null;
+    setMeta(undefined); setElapsedMs(undefined); setStages([]); result.current = null;
     setAnimDone(false); setSettled(false); setView('intake');
   };
 
@@ -96,7 +114,7 @@ export default function App() {
               <IntakeScreen onGenerate={onGenerate} />
             </>
           ) : null}
-          {view === 'loading' ? <LoadingScreen onDone={() => setAnimDone(true)} /> : null}
+          {view === 'loading' ? <LoadingScreen onDone={() => setAnimDone(true)} stages={stages} /> : null}
           {view === 'plan' && plan ? <PlanScreen
               plan={plan}
               onRestart={onRestart}

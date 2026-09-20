@@ -9,7 +9,7 @@
 //
 import { createServer } from 'node:http';
 import { loadCorpus }   from './lib/corpus.mjs';
-import { generatePlanSafe } from './lib/generate.mjs';
+import { generatePlan, generatePlanSafe } from './lib/generate.mjs';
 import { saveProfile, savePlan } from './lib/db.mjs';
 import { normalizeIntake } from './lib/normalize.mjs';
 import { buildProfile }    from './lib/profile.mjs';
@@ -46,6 +46,50 @@ createServer(async (req, res) => {
     return send(res, 200, { ok: true, corpus: CORPUS.length,
       gemini: !!process.env.GEMINI_API_KEY, tavily: !!process.env.TAVILY_API_KEY,
       supabase: !!process.env.SUPABASE_URL });
+  }
+
+  // Streaming variant. Same pipeline, but every stage is pushed as it happens
+  // so the interface can show the work instead of running a timer and guessing.
+  // POST rather than EventSource because the profile is free text and would not
+  // survive a query string.
+  if (req.method === 'POST' && req.url === '/generate/stream') {
+    res.writeHead(200, {
+      'content-type': 'text/event-stream',
+      'cache-control': 'no-cache, no-transform',
+      connection: 'keep-alive',
+      ...CORS,
+    });
+    const emit = (event, data) => res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+    const t0 = Date.now();
+
+    try {
+      await ready;
+      const intake = await readBody(req);
+      const { ok, problems } = normalizeIntake(intake);
+      if (!ok) { emit('failed', { error: 'invalid intake', problems }); return res.end(); }
+
+      const { plan, meta } = await generatePlan(CORPUS, intake, {
+        onStage: (name, payload) => emit(name, payload),
+      });
+
+      const saved = await saveProfile(buildProfile(normalizeIntake(intake).profile))
+        .catch(() => ({ saved: false }));
+      if (saved?.id) await savePlan(saved.id, plan, { model: meta.model }).catch(() => {});
+
+      emit('done', { status: 'ready', plan, meta, profileId: saved?.id ?? null,
+                     fallbackUsed: false, ms: Date.now() - t0 });
+    } catch (err) {
+      if (err.code === 'CITY_UNSUPPORTED') {
+        emit('unsupported_city', { city: err.city,
+          message: 'We cover Boston today. Tell us where you are and we will add your city next.' });
+      } else {
+        // The client falls back to POST /generate, which serves the recorded
+        // plan. Streaming is an enhancement and must never be the only path.
+        console.error('stream failed:', err.message);
+        emit('failed', { error: err.message });
+      }
+    }
+    return res.end();
   }
 
   if (req.method !== 'POST' || req.url !== '/generate') {
