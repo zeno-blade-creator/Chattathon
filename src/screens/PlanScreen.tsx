@@ -3,9 +3,11 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { weekOneToText } from '../bucket';
 import { CopyButton } from '../components/CopyButton';
+import { PipelinePanel } from '../components/PipelinePanel';
 import { PlanItemCard } from '../components/PlanItemCard';
+import { Reveal } from '../components/Reveal';
 import { colors, radius, shadow, space, type } from '../theme';
-import { BUCKETS, type ItemStatus, type Plan } from '../types';
+import { BUCKETS, type ItemStatus, type Plan, type PlanMeta } from '../types';
 
 interface Props {
   plan: Plan;
@@ -16,6 +18,10 @@ interface Props {
    * off as theirs — the same honesty the unsupported-city screen shows.
    */
   fallbackUsed?: boolean;
+  /** Pipeline telemetry for the "under the hood" panel. Absent on old responses. */
+  meta?: PlanMeta;
+  /** Server-reported round trip, in ms. */
+  elapsedMs?: number;
 }
 
 /**
@@ -28,7 +34,7 @@ function formatGeneratedAt(iso: string): string {
   return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 }
 
-export function PlanScreen({ plan, onRestart, fallbackUsed = false }: Props) {
+export function PlanScreen({ plan, onRestart, fallbackUsed = false, meta, elapsedMs }: Props) {
   // MVP+: per-item progress. Kept in the screen for now; this is the state a
   // future generation would read to avoid repeating what's already been done.
   const [statuses, setStatuses] = useState<Record<string, ItemStatus>>({});
@@ -72,6 +78,13 @@ export function PlanScreen({ plan, onRestart, fallbackUsed = false }: Props) {
 
       <WeekOne plan={plan} />
 
+      {/* Only when the pipeline actually ran. The server's own fallback path
+          reports just an error, and a panel full of zeroes would be a claim we
+          did work we didn't do. */}
+      {meta?.corpusSize ? (
+        <PipelinePanel meta={meta} itemCount={plan.items.length} elapsedMs={elapsedMs} />
+      ) : null}
+
       <View style={styles.listHeader}>
         <Text style={styles.sectionTitle}>Your ten opportunities</Text>
         <Text style={styles.progress}>
@@ -86,13 +99,14 @@ export function PlanScreen({ plan, onRestart, fallbackUsed = false }: Props) {
           <View key={bucket.type} style={styles.bucket}>
             <Text style={styles.bucketLabel}>{bucket.label}</Text>
             <Text style={styles.bucketBlurb}>{bucket.blurb}</Text>
-            {items.map((item) => (
-              <PlanItemCard
-                key={item.id}
-                item={item}
-                status={statuses[item.id] ?? 'todo'}
-                onStatusChange={(s) => setStatus(item.id, s)}
-              />
+            {items.map((item, n) => (
+              <Reveal key={item.id} delay={n * 70}>
+                <PlanItemCard
+                  item={item}
+                  status={statuses[item.id] ?? 'todo'}
+                  onStatusChange={(s) => setStatus(item.id, s)}
+                />
+              </Reveal>
             ))}
           </View>
         );

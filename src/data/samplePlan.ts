@@ -29,21 +29,27 @@ export const CORPUS_SIZE = 60;
  * Pipeline telemetry for the showcase build, where there is no server to
  * report it. Values are from the real run that produced SAMPLE_PLAN.
  */
+/**
+ * Pipeline telemetry for the recorded plan. Not hand-written — these are the
+ * values lib/profile.mjs and lib/match.mjs actually produce for SAMPLE_PROFILE
+ * below, so the "under the hood" panel stays true in demo mode. If you change
+ * SAMPLE_PROFILE, re-derive these rather than guessing.
+ */
 export const SAMPLE_META = {
   corpusSize: CORPUS_SIZE,
   shortlisted: 20,
   candidates: 20,
   signals: [
-    'b2b', 'boston', 'bootstrapped', 'business', 'chamber', 'community',
-    'consumer', 'early-adopters', 'free', 'intro-path', 'network', 'launch',
+    'boston', 'consumer', 'early-adopters', 'free', 'hyperlocal', 'launch',
+    'press', 'product-launch', 'reddit', 'social', 'speaking-slot',
   ],
-  stage: 'building',
-  goal: 'pilot-customers',
+  stage: 'launched',
+  goal: 'users',
   liveFound: 0,
   liveUsed: 0,
   rejected: [] as string[],
   draftsMissing: [] as string[],
-  model: 'recorded',
+  model: 'recorded run',
 };
 
 /** Pre-filled so the intake screen can be demoed without typing six fields. */

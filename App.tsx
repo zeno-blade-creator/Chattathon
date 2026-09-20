@@ -8,7 +8,7 @@ import { IntakeScreen } from './src/screens/IntakeScreen';
 import { LoadingScreen } from './src/screens/LoadingScreen';
 import { PlanScreen } from './src/screens/PlanScreen';
 import { colors, radius, space, type } from './src/theme';
-import type { IntakeProfile, Plan } from './src/types';
+import type { IntakeProfile, Plan, PlanMeta } from './src/types';
 
 type View_ = 'intake' | 'loading' | 'plan' | 'blocked';
 
@@ -17,6 +17,8 @@ export default function App() {
   const [plan, setPlan] = useState<Plan | null>(null);
   const [notice, setNotice] = useState<string>('');
   const [fallbackUsed, setFallbackUsed] = useState(false);
+  const [meta, setMeta] = useState<PlanMeta | undefined>(undefined);
+  const [elapsedMs, setElapsedMs] = useState<number | undefined>(undefined);
   /**
    * 'ai' runs the real generation server. 'demo' serves the recorded plan
    * instantly and offline — a dead network on stage should cost a tap, not
@@ -45,7 +47,8 @@ export default function App() {
     const r = result.current;
     if (!r) return;
     if (r.status === 'ready') {
-      setPlan(r.plan); setFallbackUsed(r.fallbackUsed); setView('plan'); return;
+      setPlan(r.plan); setFallbackUsed(r.fallbackUsed);
+      setMeta(r.meta); setElapsedMs(r.ms); setView('plan'); return;
     }
     setNotice(
       r.status === 'unsupported_city'
@@ -56,7 +59,8 @@ export default function App() {
   }, [settled, animDone]);
 
   const onRestart = () => {
-    setPlan(null); setNotice(''); setFallbackUsed(false); result.current = null;
+    setPlan(null); setNotice(''); setFallbackUsed(false);
+    setMeta(undefined); setElapsedMs(undefined); result.current = null;
     setAnimDone(false); setSettled(false); setView('intake');
   };
 
@@ -93,7 +97,13 @@ export default function App() {
             </>
           ) : null}
           {view === 'loading' ? <LoadingScreen onDone={() => setAnimDone(true)} /> : null}
-          {view === 'plan' && plan ? <PlanScreen plan={plan} onRestart={onRestart} fallbackUsed={fallbackUsed} /> : null}
+          {view === 'plan' && plan ? <PlanScreen
+              plan={plan}
+              onRestart={onRestart}
+              fallbackUsed={fallbackUsed}
+              meta={meta}
+              elapsedMs={elapsedMs}
+            /> : null}
           {view === 'blocked' ? (
             <View style={styles.blocked}>
               <Text style={styles.blockedTitle}>We cover Boston today</Text>

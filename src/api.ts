@@ -27,8 +27,11 @@ export type GenerateResult =
   | { status: 'unsupported_city'; city: string; message: string }
   | { status: 'failed'; error: string };
 
+// SAMPLE_META describes the real run that produced SAMPLE_PLAN, so the
+// pipeline panel stays truthful in demo mode rather than showing zeroes.
 const recorded = (): GenerateResult =>
-  ({ status: 'ready', plan: SAMPLE_PLAN, profileId: null, fallbackUsed: true });
+  ({ status: 'ready', plan: SAMPLE_PLAN, profileId: null, fallbackUsed: true,
+     meta: SAMPLE_META });
 
 export async function generatePlan(p: IntakeProfile, mode: Mode = DEFAULT_MODE): Promise<GenerateResult> {
   // Offline insurance: instant, identical every time, and immune to a dead
